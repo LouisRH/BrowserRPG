@@ -4,6 +4,7 @@
   "description": "",
   "main": "app.js",
   "dependencies": {
+    "angular": "^1.7.2",
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
     "mongodb": "^3.1.1",

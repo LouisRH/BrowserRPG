@@ -4,9 +4,60 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="/public/js/angular.js"></script>
+    <link rel="stylesheet" href="/public/css/main.css">
     <title>Browser RPG</title>
 </head>
 <body>
-    <p>ayy</p>
+    <div ng-app="charCreate" ng-controller="charCreateCtrl">
+        <h2>Create Your Character</h2>
+        <p class="name">Name: </p>
+        <input class="name" type="text" ng-model="gamedata.name">
+        <p>Bonus Points: {{bonus}}</p>
+
+        <p class="hp">HP: 100 + </p>
+        <button class="hp" ng-click="minus('hp')">-</button>
+        <p class="hp">{{gamedata.bonusHP}}</p>
+        <button class="hp" ng-click="plus('hp')">+</button><br>
+
+        <p class="mp">MP: 30 + </p>
+        <button class="mp" ng-click="minus('mp')">-</button>
+        <p class="mp">{{gamedata.bonusMP}}</p>
+        <button class="mp" ng-click="plus('mp')">+</button><br>
+
+        <p class="str">Strength: 5 + </p>
+        <button class="str" ng-click="minus('str')">-</button>
+        <p class="str">{{gamedata.bonusStr}}</p>
+        <button class="str" ng-click="plus('str')">+</button><br>
+
+        <p class="mag">Magic: 5 + </p>
+        <button class="mag" ng-click="minus('mag')">-</button>
+        <p class="mag">{{gamedata.bonusMag}}</p>
+        <button class="mag" ng-click="plus('mag')">+</button><br>
+
+        <p class="def">Defense: 5 + </p>
+        <button class="def" ng-click="minus('def')">-</button>
+        <p class="def">{{gamedata.bonusDef}}</p>
+        <button class="def" ng-click="plus('def')">+</button><br>
+
+        <p class="res">Resistance: 5 + </p>
+        <button class="res" ng-click="minus('res')">-</button>
+        <p class="res">{{gamedata.bonusRes}}</p>
+        <button class="res" ng-click="plus('res')">+</button><br>
+
+        <p class="agi">Agility: 5 + </p>
+        <button class="agi" ng-click="minus('agi')">-</button>
+        <p class="agi">{{gamedata.bonusAgi}}</p>
+        <button class="agi" ng-click="plus('agi')">+</button><br>
+
+        <p class="luck">Luck: 5 + </p>
+        <button class="luck" ng-click="minus('luck')">-</button>
+        <p class="luck">{{gamedata.bonusLuck}}</p>
+        <button class="luck" ng-click="plus('luck')">+</button><br>
+
+        <button ng-click="submit('yes')">Start</button>
+        <p>{{result}}</p>
+    </div>
 </body>
 </html>
