@@ -103,8 +103,7 @@ app.controller('charCreateCtrl', function($scope) {
         }
     }
 
-    $scope.result = "why"
-    $scope.submit = function(result) {
-        $scope.result = result;
+    $scope.submit = function() {
+        $http.post('/game', $scope.gamedata);
     }
 });

@@ -10,6 +10,10 @@ const index = (req, res) => {
 const constructorMethod = app => {
     app.get("/", index);
     app.use("/game", gameRoutes);
+
+    app.use("*", (req, res) => {
+        res.status(404).json({ error: "Not found" });
+    });
   };
   
   module.exports = constructorMethod;

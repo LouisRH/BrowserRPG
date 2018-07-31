@@ -4,9 +4,9 @@ const data = require("../data");
 const gameData = data.gamedata;
 const enemyData = data.enemydata; // Figure out when these are used
 
-router.get('/game', (req,res) => {
-    // Eventually load game data
-    res.render("layouts/game");
+router.post('/game', (req,res) => {
+    
+    res.sendFile("game.html", {root: "public/html/"});
 })
 
 module.exports = router;

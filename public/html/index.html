@@ -18,12 +18,12 @@
 
         <p class="hp">HP: 100 + </p>
         <button class="hp" ng-click="minus('hp')">-</button>
-        <p class="hp">{{gamedata.bonusHP}}</p>
+        <p class="hp">{{gamedata.bonusHP * 10}}</p>
         <button class="hp" ng-click="plus('hp')">+</button><br>
 
         <p class="mp">MP: 30 + </p>
         <button class="mp" ng-click="minus('mp')">-</button>
-        <p class="mp">{{gamedata.bonusMP}}</p>
+        <p class="mp">{{gamedata.bonusMP * 5}}</p>
         <button class="mp" ng-click="plus('mp')">+</button><br>
 
         <p class="str">Strength: 5 + </p>
@@ -56,8 +56,7 @@
         <p class="luck">{{gamedata.bonusLuck}}</p>
         <button class="luck" ng-click="plus('luck')">+</button><br>
 
-        <button ng-click="submit('yes')">Start</button>
-        <p>{{result}}</p>
+        <button ng-click="submit()">Start</button>
     </div>
 </body>
 </html>
