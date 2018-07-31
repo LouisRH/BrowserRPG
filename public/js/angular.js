@@ -1,5 +1,5 @@
 var app = angular.module('charCreate', []);
-app.controller('charCreateCtrl', function($scope) {
+app.controller('charCreateCtrl', function($scope, $http, $window) {
     $scope.bonus = 10;
     $scope.gamedata = {
         name: "",
@@ -104,6 +104,12 @@ app.controller('charCreateCtrl', function($scope) {
     }
 
     $scope.submit = function() {
-        $http.post('/game', $scope.gamedata);
+        var url = "http://" + $window.location.host + "/game";
+        $http.post('/game', $scope.gamedata).then((responseGood) => {
+            alert(responseGood.data.bonusAgi);
+        }, (responseBad) => {
+            alert("Whoops");
+        });
+        $window.location.href = url;
     }
 });
