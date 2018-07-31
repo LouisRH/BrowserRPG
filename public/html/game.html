@@ -5,11 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-    <script src="/public/js/angular.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
+    <script src="/public/js/angularActiveGame.js"></script>
     <link rel="stylesheet" href="/public/css/main.css">
     <title>Browser RPG</title>
 </head>
 <body>
-    <p>hooooooo boiii</p>
+    <div ng-app="activeGame" ng-controller="activeGameCtrl">
+        <p>Name: {{gamedata.name}}</p>
+        <p>HP: {{gamedata.HP}}</p>
+        <p>MP: {{gamedata.MP}}</p>
+        <p>Str: {{gamedata.str}}</p>
+        <p>Mag: {{gamedata.mag}}</p>
+        <p>Def: {{gamedata.def}}</p>
+        <p>Res: {{gamedata.res}}</p>
+        <p>Agi: {{gamedata.agi}}</p>
+        <p>Luck: {{gamedata.luck}}</p>
+    </div>
 </body>
 </html>

@@ -23,8 +23,8 @@ function newGame(playerData){
     let newGameData = {
         name: playerData.name,
         level: 1,
-        HP: playerData.bonusHP + 100,
-        MP: playerData.bonusMP + 30,
+        HP: (playerData.bonusHP * 10) + 100,
+        MP: (playerData.bonusMP * 5) + 30,
         str: playerData.bonusStr + 5,
         mag: playerData.bonusMag + 5,
         def: playerData.bonusDef + 5,

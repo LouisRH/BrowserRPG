@@ -1,15 +1,36 @@
 const express = require("express");
-const gameRoutes = require("./game");
+const path = require("path");
+const data = require("../data");
+const gameData = data.gamedata;
+const enemyData = data.enemydata;
 
 const index = (req, res) => {
-    res.sendFile("index.html", {root: "public/html/"});
-    
+    res.sendFile(path.join(__dirname, "..\\public\\html", "index.html"));
+    return;
+}
+
+const gameGet = (req, res) => {
+    res.sendFile(path.join(__dirname, "..\\public\\html", "game.html"));
+    return;
+}
+
+const gamePost = async (req, res) => {
+    if (req.body.messageType === "newGame") {
+        let newGameData = await gameData.newGame(req.body);
+        res.status(200).send(newGameData._id);
+    } else if (req.body.messageType === "loadPlayer") {
+        let playerData = await gameData.getGameDataById(req.body.gameID);
+        console.log(req.body.gameID);
+        console.log(playerData);
+        res.status(200).send(playerData);
+    }
     return;
 }
 
 const constructorMethod = app => {
     app.get("/", index);
-    app.use("/game", gameRoutes);
+    app.get("/game/:gameID", gameGet);
+    app.post("/game", gamePost);
 
     app.use("*", (req, res) => {
         res.status(404).json({ error: "Not found" });

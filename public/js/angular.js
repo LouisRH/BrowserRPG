@@ -2,6 +2,7 @@ var app = angular.module('charCreate', []);
 app.controller('charCreateCtrl', function($scope, $http, $window) {
     $scope.bonus = 10;
     $scope.gamedata = {
+        messageType: "newGame",
         name: "",
         bonusHP: 0,
         bonusMP: 0,
@@ -104,12 +105,11 @@ app.controller('charCreateCtrl', function($scope, $http, $window) {
     }
 
     $scope.submit = function() {
-        var url = "http://" + $window.location.host + "/game";
         $http.post('/game', $scope.gamedata).then((responseGood) => {
-            alert(responseGood.data.bonusAgi);
+            var url = "http://" + $window.location.host + "/game/" + responseGood.data;
+            $window.location.href = url;
         }, (responseBad) => {
-            alert("Whoops");
+            alert(responseBad.data);
         });
-        $window.location.href = url;
     }
 });
