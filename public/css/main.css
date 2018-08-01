@@ -11,18 +11,31 @@ body {
     margin: auto;
     width: 25%;
     padding-top: 5px;
+    background-color: black;
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.gameBody {
+    width: 35%;
 }
 
 .playerInfo,.enemyInfo {
-    border: 3px solid;
+    border: 3px solid white;
     padding: 5px;
-    width: 130px;
+    width: 200px;
     border-radius: 5px;
 }
 
 .charCreate {
-    border: 3px solid;
+    border: 3px solid white;
     padding: 5px;
-    width: 250px;
+    width: 300px;
     border-radius: 5px;
+}
+
+input, button {
+    background-color: black;
+    color: white;
+    border-radius: 3px;
 }
