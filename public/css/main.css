@@ -1,3 +1,28 @@
-.name,.hp,.mp,.str,.mag,.def,.res,.agi,.luck{
+.name,.hp,.mp,.str,.mag,.def,.res,.agi,.luck,.playerInfo,.enemyInfo{
     display: inline-block;
+}
+
+p {
+    margin: 0;
+    padding: 3px;
+}
+
+body {
+    margin: auto;
+    width: 25%;
+    padding-top: 5px;
+}
+
+.playerInfo,.enemyInfo {
+    border: 3px solid;
+    padding: 5px;
+    width: 130px;
+    border-radius: 5px;
+}
+
+.charCreate {
+    border: 3px solid;
+    padding: 5px;
+    width: 250px;
+    border-radius: 5px;
 }

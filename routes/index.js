@@ -27,7 +27,6 @@ const gamePost = async (req, res) => {
             alert("Error: Could not find cookie");
         }
         let playerData = await gameData.getGameDataById(gameCookie);
-        res.clearCookie("GameCookie");
         res.status(200).send(playerData);
     }
     return;

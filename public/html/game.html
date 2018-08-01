@@ -12,15 +12,30 @@
 </head>
 <body>
     <div ng-app="activeGame" ng-controller="activeGameCtrl">
-        <p>Name: {{gamedata.name}}</p>
-        <p>HP: {{gamedata.HP}}</p>
-        <p>MP: {{gamedata.MP}}</p>
-        <p>Str: {{gamedata.str}}</p>
-        <p>Mag: {{gamedata.mag}}</p>
-        <p>Def: {{gamedata.def}}</p>
-        <p>Res: {{gamedata.res}}</p>
-        <p>Agi: {{gamedata.agi}}</p>
-        <p>Luck: {{gamedata.luck}}</p>
+        <div class="playerInfo">
+            <p>Name: {{gamedata.name}}</p>
+            <p>Level: {{gamedata.level}}</p>
+            <p>HP: {{gamedata.HP}}</p>
+            <p>MP: {{gamedata.MP}}</p>
+            <p>Str: {{gamedata.str}}</p>
+            <p>Mag: {{gamedata.mag}}</p>
+            <p>Def: {{gamedata.def}}</p>
+            <p>Res: {{gamedata.res}}</p>
+            <p>Agi: {{gamedata.agi}}</p>
+            <p>Luck: {{gamedata.luck}}</p>
+        </div>
+        <div class="enemyInfo">
+            <p>Name: Enemy</p>
+            <p>Level: {{gamedata.enemyLevel}}</p>
+            <p>HP: {{gamedata.enemyHP}}</p>
+            <p>MP: {{gamedata.enemyMP}}</p>
+            <p>Str: {{gamedata.enemyStr}}</p>
+            <p>Mag: {{gamedata.enemyMag}}</p>
+            <p>Def: {{gamedata.enemyDef}}</p>
+            <p>Res: {{gamedata.enemyRes}}</p>
+            <p>Agi: {{gamedata.enemyAgi}}</p>
+            <p>Luck: {{gamedata.enemyLuck}}</p>
+        </div>
     </div>
 </body>
 </html>
