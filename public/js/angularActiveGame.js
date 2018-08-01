@@ -20,5 +20,13 @@ app.controller('activeGameCtrl', function($scope, $http) {
         }
     }, (responseBad) => {
         alert(responseBad.data);
-    })
+    });
+
+    $scope.action = function(action) {
+        if (action === "attack") {
+            //assign current player and enemy stats, max hp and mp, and statuses
+            //send through post, handle based on action name, calculate damage/stat/status changes
+            //return results
+        }
+    };
 });

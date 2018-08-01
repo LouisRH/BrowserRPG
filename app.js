@@ -8,7 +8,6 @@ app.use("/public", static);
 
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 const cookieParser = require("cookie-parser");

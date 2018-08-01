@@ -12,69 +12,56 @@
 <body>
     <div class="charCreate" ng-app="charCreate" ng-controller="charCreateCtrl">
         <h2>Create Your Character</h2>
-        <div class="param">
             <p class="name">Name: </p>
             <input class="name" type="text" maxlength="10" ng-model="gamedata.name">
             <p>Bonus Points: {{bonus}}</p>
-        </div>
 
-        <div class="param">
-            <p class="hp">HP: 100 + </p>
-            <button class="hp" ng-click="minus('hp')">-</button>
-            <p class="hp">{{gamedata.bonusHP * 10}}</p>
-            <button class="hp" ng-click="plus('hp')">+</button>
-        </div>
+            <div class="createLabels">
+                <p class="hp">HP: </p><br>
+                <p class="mp">MP: </p><br>
+                <p class="str">Strength: </p><br>
+                <p class="mag">Magic: </p><br>
+                <p class="def">Defense: </p><br>
+                <p class="res">Resistance: </p><br>
+                <p class="agi">Agility: </p><br>
+                <p class="luck">Luck: </p>
+            </div>
+            <div class="createStats">
+                <p class="hp">100 + </p>
+                <button class="hp" ng-click="minus('hp')">-</button>
+                <p class="hp">{{gamedata.bonusHP * 10}}</p>
+                <button class="hp" ng-click="plus('hp')">+</button><br>
+                <p class="mp">30 + </p>
+                <button class="mp" ng-click="minus('mp')">-</button>
+                <p class="mp">{{gamedata.bonusMP * 5}}</p>
+                <button class="mp" ng-click="plus('mp')">+</button><br>
+                <p class="str">5 + </p>
+                <button class="str" ng-click="minus('str')">-</button>
+                <p class="str">{{gamedata.bonusStr}}</p>
+                <button class="str" ng-click="plus('str')">+</button><br>
+                <p class="mag">5 + </p>
+                <button class="mag" ng-click="minus('mag')">-</button>
+                <p class="mag">{{gamedata.bonusMag}}</p>
+                <button class="mag" ng-click="plus('mag')">+</button><br>
+                <p class="def">5 + </p>
+                <button class="def" ng-click="minus('def')">-</button>
+                <p class="def">{{gamedata.bonusDef}}</p>
+                <button class="def" ng-click="plus('def')">+</button><br>
+                <p class="res">5 + </p>
+                <button class="res" ng-click="minus('res')">-</button>
+                <p class="res">{{gamedata.bonusRes}}</p>
+                <button class="res" ng-click="plus('res')">+</button><br>
+                <p class="agi">5 + </p>
+                <button class="agi" ng-click="minus('agi')">-</button>
+                <p class="agi">{{gamedata.bonusAgi}}</p>
+                <button class="agi" ng-click="plus('agi')">+</button><br>
+                <p class="luck">5 + </p>
+                <button class="luck" ng-click="minus('luck')">-</button>
+                <p class="luck">{{gamedata.bonusLuck}}</p>
+                <button class="luck" ng-click="plus('luck')">+</button>
+            </div><br>
 
-        <div class="param">
-            <p class="mp">MP: 30 + </p>
-            <button class="mp" ng-click="minus('mp')">-</button>
-            <p class="mp">{{gamedata.bonusMP * 5}}</p>
-            <button class="mp" ng-click="plus('mp')">+</button>
-        </div>
-
-        <div class="param">
-            <p class="str">Strength: 5 + </p>
-            <button class="str" ng-click="minus('str')">-</button>
-            <p class="str">{{gamedata.bonusStr}}</p>
-            <button class="str" ng-click="plus('str')">+</button>
-        </div>
-
-        <div class="param">
-            <p class="mag">Magic: 5 + </p>
-            <button class="mag" ng-click="minus('mag')">-</button>
-            <p class="mag">{{gamedata.bonusMag}}</p>
-            <button class="mag" ng-click="plus('mag')">+</button>
-        </div>
-
-        <div class="param">
-            <p class="def">Defense: 5 + </p>
-            <button class="def" ng-click="minus('def')">-</button>
-            <p class="def">{{gamedata.bonusDef}}</p>
-            <button class="def" ng-click="plus('def')">+</button>
-        </div>
-
-        <div class="param">
-            <p class="res">Resistance: 5 + </p>
-            <button class="res" ng-click="minus('res')">-</button>
-            <p class="res">{{gamedata.bonusRes}}</p>
-            <button class="res" ng-click="plus('res')">+</button>
-        </div>
-
-        <div class="param">
-            <p class="agi">Agility: 5 + </p>
-            <button class="agi" ng-click="minus('agi')">-</button>
-            <p class="agi">{{gamedata.bonusAgi}}</p>
-            <button class="agi" ng-click="plus('agi')">+</button>
-        </div>
-
-        <div class="param">
-            <p class="luck">Luck: 5 + </p>
-            <button class="luck" ng-click="minus('luck')">-</button>
-            <p class="luck">{{gamedata.bonusLuck}}</p>
-            <button class="luck" ng-click="plus('luck')">+</button>
-        </div>
-
-        <button ng-click="submit()">Start</button>
+        <button class="menuBtn" ng-click="submit()">Start</button>
     </div>
 </body>
 </html>

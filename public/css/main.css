@@ -1,4 +1,4 @@
-.name,.hp,.mp,.str,.mag,.def,.res,.agi,.luck,.playerInfo,.enemyInfo,.playerLabels,.playerRawStats,.enemyLabels,.enemyRawStats{
+.name,.hp,.mp,.str,.mag,.def,.res,.agi,.luck,.playerInfo,.enemyInfo,.playerLabels,.playerRawStats,.enemyLabels,.enemyRawStats,.createLabels,.createStats{
     display: inline-block;
 }
 
