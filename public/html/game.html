@@ -10,31 +10,65 @@
     <link rel="stylesheet" href="/public/css/main.css">
     <title>Browser RPG</title>
 </head>
-<body class="gameBody">
+<body>
     <div ng-app="activeGame" ng-controller="activeGameCtrl">
         <div class="playerInfo">
-            <p>Name: {{gamedata.playerData.name}}</p>
-            <p>Level: {{gamedata.playerData.level}}</p>
-            <p>HP: {{gamedata.playerData.HP}}</p>
-            <p>MP: {{gamedata.playerData.MP}}</p>
-            <p>Str: {{gamedata.playerData.str}}</p>
-            <p>Mag: {{gamedata.playerData.mag}}</p>
-            <p>Def: {{gamedata.playerData.def}}</p>
-            <p>Res: {{gamedata.playerData.res}}</p>
-            <p>Agi: {{gamedata.playerData.agi}}</p>
-            <p>Luck: {{gamedata.playerData.luck}}</p>
+            <div class="playerLabels">
+                <p>Name: </p>
+                <p>Level: </p>
+                <p>HP: </p>
+                <p>MP: </p>
+                <p>Str: </p>
+                <p>Mag: </p>
+                <p>Def: </p>
+                <p>Res: </p>
+                <p>Agi: </p>
+                <p>Luck: </p>
+            </div>
+            <div class="playerRawStats">
+                <p>{{gamedata.playerData.name}}</p>
+                <p>{{gamedata.playerData.level}}</p>
+                <p>{{gamedata.playerData.HP}}</p>
+                <p>{{gamedata.playerData.MP}}</p>
+                <p>{{gamedata.playerData.str}}</p>
+                <p>{{gamedata.playerData.mag}}</p>
+                <p>{{gamedata.playerData.def}}</p>
+                <p>{{gamedata.playerData.res}}</p>
+                <p>{{gamedata.playerData.agi}}</p>
+                <p>{{gamedata.playerData.luck}}</p>
+            </div>
         </div>
         <div class="enemyInfo">
-            <p>Name: {{gamedata.enemyData.name}}</p>
-            <p>Level: {{currEnemyStats.level}}</p>
-            <p>HP: {{currEnemyStats.HP}}</p>
-            <p>MP: {{currEnemyStats.MP}}</p>
-            <p>Str: {{currEnemyStats.str}}</p>
-            <p>Mag: {{currEnemyStats.mag}}</p>
-            <p>Def: {{currEnemyStats.def}}</p>
-            <p>Res: {{currEnemyStats.res}}</p>
-            <p>Agi: {{currEnemyStats.agi}}</p>
-            <p>Luck: {{currEnemyStats.luck}}</p>
+            <div class="enemyLabels">
+                <p>Name: </p>
+                <p>Level: </p>
+                <p>HP: </p>
+                <p>MP: </p>
+                <p>Str: </p>
+                <p>Mag: </p>
+                <p>Def: </p>
+                <p>Res: </p>
+                <p>Agi: </p>
+                <p>Luck: </p>
+            </div>
+            <div class="enemyRawStats">
+                <p>{{gamedata.enemyData.name}}</p>
+                <p>{{currEnemyStats.level}}</p>
+                <p>{{currEnemyStats.HP}}</p>
+                <p>{{currEnemyStats.MP}}</p>
+                <p>{{currEnemyStats.str}}</p>
+                <p>{{currEnemyStats.mag}}</p>
+                <p>{{currEnemyStats.def}}</p>
+                <p>{{currEnemyStats.res}}</p>
+                <p>{{currEnemyStats.agi}}</p>
+                <p>{{currEnemyStats.luck}}</p>
+            </div>
+        </div>
+        <div class="menu">
+            <button class="menuBtn" ng-click="action('attack')">Attack</button>
+            <button class="menuBtn" ng-click="action('magic')">Magic</button>
+            <button class="menuBtn" ng-click="action('defend')">Defend</button>
+            <button class="menuBtn" ng-click="action('next')" disabled>Next</button>
         </div>
     </div>
 </body>

@@ -21,13 +21,13 @@ const gamePost = async (req, res) => {
             let enemySeed = await enemyData.seedEnemies();
         }
         const expiresAt = new Date();
-        expiresAt.setMinutes(expiresAt.getMinutes() + 30);
+        expiresAt.setMinutes(expiresAt.getMinutes() + 10000);
         res.cookie("GameCookie", newGameData._id, {expires: expiresAt});
         res.status(200).send(newGameData._id);
     } else if (req.body.messageType === "loadPlayer") {
         let gameCookie = req.cookies["GameCookie"];
         if (!gameCookie) {
-            alert("Error: Could not find cookie");
+            res.status(404).send({error: "Cookie not found"});
         }
         let playerData = await gameData.getGameDataById(gameCookie);
         let currEnemyData = await enemyData.pickRandomEnemy();
