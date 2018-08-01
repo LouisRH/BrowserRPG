@@ -17,11 +17,17 @@ const gameGet = (req, res) => {
 const gamePost = async (req, res) => {
     if (req.body.messageType === "newGame") {
         let newGameData = await gameData.newGame(req.body);
+        const expiresAt = new Date();
+        expiresAt.setMinutes(expiresAt.getMinutes() + 30);
+        res.cookie("GameCookie", newGameData._id, {expires: expiresAt});
         res.status(200).send(newGameData._id);
     } else if (req.body.messageType === "loadPlayer") {
-        let playerData = await gameData.getGameDataById(req.body.gameID);
-        console.log(req.body.gameID);
-        console.log(playerData);
+        let gameCookie = req.cookies["GameCookie"];
+        if (!gameCookie) {
+            alert("Error: Could not find cookie");
+        }
+        let playerData = await gameData.getGameDataById(gameCookie);
+        res.clearCookie("GameCookie");
         res.status(200).send(playerData);
     }
     return;
@@ -29,7 +35,7 @@ const gamePost = async (req, res) => {
 
 const constructorMethod = app => {
     app.get("/", index);
-    app.get("/game/:gameID", gameGet);
+    app.get("/game", gameGet);
     app.post("/game", gamePost);
 
     app.use("*", (req, res) => {

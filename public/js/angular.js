@@ -106,7 +106,7 @@ app.controller('charCreateCtrl', function($scope, $http, $window) {
 
     $scope.submit = function() {
         $http.post('/game', $scope.gamedata).then((responseGood) => {
-            var url = "http://" + $window.location.host + "/game/" + responseGood.data;
+            var url = "http://" + $window.location.host + "/game";
             $window.location.href = url;
         }, (responseBad) => {
             alert(responseBad.data);

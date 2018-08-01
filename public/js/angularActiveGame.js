@@ -1,5 +1,5 @@
 var app = angular.module('activeGame', ['ngRoute']);
-app.controller('activeGameCtrl', function($scope, $http, $route) {
+app.controller('activeGameCtrl', function($scope, $http) {
     $scope.gamedata = {
         name: "",
         HP: 0,
@@ -11,18 +11,12 @@ app.controller('activeGameCtrl', function($scope, $http, $route) {
         agi: 0,
         luck: 0
     };
-    //$scope.$on('$routeChangeSuccess', function() {
-    //$transitions.onSuccess({}, function(transition) {
-        var sendData = {
-            messageType: "loadPlayer",
-            gameID: $route.current.params
-        }
-        alert(sendData.gameID.gameID);
-        $http.post('/game', sendData).then((responseGood) => {
-            alert(responseGood.data.name);
-            $scope.gamedata = responseGood.data;
-        }, (responseBad) => {
-            alert(responseBad.data);
-        })
-   //})
+    var sendData = {
+        messageType: "loadPlayer"
+    }
+    $http.post('/game', sendData).then((responseGood) => {
+        $scope.gamedata = responseGood.data;
+    }, (responseBad) => {
+        alert(responseBad.data);
+    })
 });
