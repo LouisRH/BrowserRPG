@@ -17,6 +17,9 @@ const gameGet = (req, res) => {
 const gamePost = async (req, res) => {
     if (req.body.messageType === "newGame") {
         let newGameData = await gameData.newGame(req.body);
+        if (await enemyData.getEnemyDataById(1) === null) {
+            let enemySeed = await enemyData.seedEnemies();
+        }
         const expiresAt = new Date();
         expiresAt.setMinutes(expiresAt.getMinutes() + 30);
         res.cookie("GameCookie", newGameData._id, {expires: expiresAt});
@@ -27,7 +30,12 @@ const gamePost = async (req, res) => {
             alert("Error: Could not find cookie");
         }
         let playerData = await gameData.getGameDataById(gameCookie);
-        res.status(200).send(playerData);
+        let currEnemyData = await enemyData.pickRandomEnemy();
+        let result = {
+            playerData: playerData,
+            enemyData: currEnemyData
+        }
+        res.status(200).send(result);
     }
     return;
 }

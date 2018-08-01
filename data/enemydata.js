@@ -1,5 +1,6 @@
 const mongoCollections = require("../mongoCollections");
 const enemyDataCollection = mongoCollections.enemydata;
+const gameCalc = require("./gameCalc");
 
 function listAllEnemies(){
     return enemyDataCollection().then((enemyData) => {
@@ -44,7 +45,7 @@ function newEnemy(enemyData){
     return enemyDataCollection().then(async (enemydata) => {
   
         let bandit = await newEnemy({
-            _id: 1,
+            id: 1,
             name: "Bandit",
             HPScale: 100,
             MPScale: 100,
@@ -57,7 +58,7 @@ function newEnemy(enemyData){
         });
     
         let orc = await newEnemy({
-            _id: 2,
+            id: 2,
             name: "Orc",
             HPScale: 150,
             MPScale: 60,
@@ -70,7 +71,7 @@ function newEnemy(enemyData){
         });
     
         let witch = await newEnemy({
-            _id: 3,
+            id: 3,
             name: "Witch",
             HPScale: 70,
             MPScale: 130,
@@ -83,7 +84,7 @@ function newEnemy(enemyData){
         });
     
         let darkElf = await newEnemy({
-            _id: 4,
+            id: 4,
             name: "Dark Elf",
             HPScale: 75,
             MPScale: 100,
@@ -96,7 +97,7 @@ function newEnemy(enemyData){
         });
     
         let slime = await newEnemy({
-            _id: 5,
+            id: 5,
             name: "Slime",
             HPScale: 65,
             MPScale: 140,
@@ -109,7 +110,7 @@ function newEnemy(enemyData){
         });
     
         let reaper = await newEnemy({
-            _id: 6,
+            id: 6,
             name: "Reaper",
             HPScale: 200,
             MPScale: 200,
@@ -123,9 +124,33 @@ function newEnemy(enemyData){
       });
   }
 
+  async function pickRandomEnemy() {
+      let reaperCount = 0;
+      let selected = false;
+      let selectedId;
+      while (!selected) {
+          let randNum = gameCalc.rand(1, 7);
+          if (randNum === 6) {
+              if (reaperCount === 3) {
+                  selectedId = 6;
+                  selected = true;
+              } else {
+                  reaperCount++;
+              }
+          } else {
+              selectedId = randNum;
+              selected = true;
+          }
+      }
+
+      let enemy = await getEnemyDataById(selectedId);
+      return enemy;
+  }
+
   module.exports = {
     listAllEnemies: listAllEnemies,
     getEnemyDataById: getEnemyDataById,
     newEnemy: newEnemy,
-    seedEnemies: seedEnemies
+    seedEnemies: seedEnemies,
+    pickRandomEnemy: pickRandomEnemy
   }

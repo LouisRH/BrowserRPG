@@ -13,28 +13,28 @@
 <body class="gameBody">
     <div ng-app="activeGame" ng-controller="activeGameCtrl">
         <div class="playerInfo">
-            <p>Name: {{gamedata.name}}</p>
-            <p>Level: {{gamedata.level}}</p>
-            <p>HP: {{gamedata.HP}}</p>
-            <p>MP: {{gamedata.MP}}</p>
-            <p>Str: {{gamedata.str}}</p>
-            <p>Mag: {{gamedata.mag}}</p>
-            <p>Def: {{gamedata.def}}</p>
-            <p>Res: {{gamedata.res}}</p>
-            <p>Agi: {{gamedata.agi}}</p>
-            <p>Luck: {{gamedata.luck}}</p>
+            <p>Name: {{gamedata.playerData.name}}</p>
+            <p>Level: {{gamedata.playerData.level}}</p>
+            <p>HP: {{gamedata.playerData.HP}}</p>
+            <p>MP: {{gamedata.playerData.MP}}</p>
+            <p>Str: {{gamedata.playerData.str}}</p>
+            <p>Mag: {{gamedata.playerData.mag}}</p>
+            <p>Def: {{gamedata.playerData.def}}</p>
+            <p>Res: {{gamedata.playerData.res}}</p>
+            <p>Agi: {{gamedata.playerData.agi}}</p>
+            <p>Luck: {{gamedata.playerData.luck}}</p>
         </div>
         <div class="enemyInfo">
-            <p>Name: Enemy</p>
-            <p>Level: {{gamedata.enemyLevel}}</p>
-            <p>HP: {{gamedata.enemyHP}}</p>
-            <p>MP: {{gamedata.enemyMP}}</p>
-            <p>Str: {{gamedata.enemyStr}}</p>
-            <p>Mag: {{gamedata.enemyMag}}</p>
-            <p>Def: {{gamedata.enemyDef}}</p>
-            <p>Res: {{gamedata.enemyRes}}</p>
-            <p>Agi: {{gamedata.enemyAgi}}</p>
-            <p>Luck: {{gamedata.enemyLuck}}</p>
+            <p>Name: {{gamedata.enemyData.name}}</p>
+            <p>Level: {{currEnemyStats.level}}</p>
+            <p>HP: {{currEnemyStats.HP}}</p>
+            <p>MP: {{currEnemyStats.MP}}</p>
+            <p>Str: {{currEnemyStats.str}}</p>
+            <p>Mag: {{currEnemyStats.mag}}</p>
+            <p>Def: {{currEnemyStats.def}}</p>
+            <p>Res: {{currEnemyStats.res}}</p>
+            <p>Agi: {{currEnemyStats.agi}}</p>
+            <p>Luck: {{currEnemyStats.luck}}</p>
         </div>
     </div>
 </body>
