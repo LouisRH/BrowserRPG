@@ -3,6 +3,7 @@ const path = require("path");
 const data = require("../data");
 const gameData = data.gamedata;
 const enemyData = data.enemydata;
+const gameCalc = data.gameCalc;
 
 const index = (req, res) => {
     res.sendFile(path.join(__dirname, "..\\public\\html", "index.html"));
@@ -24,6 +25,7 @@ const gamePost = async (req, res) => {
         expiresAt.setMinutes(expiresAt.getMinutes() + 10000);
         res.cookie("GameCookie", newGameData._id, {expires: expiresAt});
         res.status(200).send(newGameData._id);
+
     } else if (req.body.messageType === "loadPlayer") {
         let gameCookie = req.cookies["GameCookie"];
         if (!gameCookie) {
@@ -36,6 +38,10 @@ const gamePost = async (req, res) => {
             enemyData: currEnemyData
         }
         res.status(200).send(result);
+
+    } else {// make sure to keep this last!!!!!
+        let turns = gameCalc.createTurns(req.body);
+        res.status(200).send(turns);
     }
     return;
 }
