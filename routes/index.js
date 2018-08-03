@@ -32,13 +32,27 @@ const gamePost = async (req, res) => {
             res.status(404).send({error: "Cookie not found"});
         }
         let playerData = await gameData.getGameDataById(gameCookie);
-        let currEnemyData = await enemyData.pickRandomEnemy();
+        let currEnemyData = await enemyData.getEnemyDataById(playerData.enemyID);
         let result = {
             playerData: playerData,
             enemyData: currEnemyData
         }
         res.status(200).send(result);
 
+    } else if (req.body.messageType === "next") {
+        let currGameData = await gameData.getGameDataById(req.body.playerID);
+        //console.log(req.body.playerID);
+        //console.log(enemyData);
+        //console.log(gameCalc);
+        let newEnemy = await enemyData.pickRandomEnemy();
+        let playerData = await gameCalc.nextEnemy(req.body, currGameData, newEnemy);
+        let currPlayerData = await gameData.updateGame(playerData);
+        let currEnemyData = await enemyData.getEnemyDataById(currPlayerData.enemyID);
+        let result = {
+            playerData: currPlayerData,
+            enemyData: currEnemyData
+        }
+        res.status(200).send(result);
     } else {// make sure to keep this last!!!!!
         let turns = await gameCalc.createTurns(req.body);
         res.status(200).send(turns);

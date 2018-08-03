@@ -1,6 +1,7 @@
 const mongoCollections = require("../mongoCollections");
 const uuid = require("uuid");
 const gameDataCollection = mongoCollections.gamedata;
+const enemyData = require("./enemydata");
 
 function listAllGames(){
     return gameDataCollection().then((gameData) => {
@@ -17,8 +18,10 @@ function getGameDataById(id) {
   });
 }
 
-function newGame(playerData){
+async function newGame(playerData){
+  let enemy = await enemyData.pickRandomEnemy();
   return gameDataCollection().then((gamedata) => {
+    enemyID = enemy._id;
 
     let newGameData = {
         name: playerData.name,
@@ -40,6 +43,7 @@ function newGame(playerData){
         bonusAgi: playerData.bonusAgi,
         bonusLuck: playerData.bonusLuck,
         exp: 0,
+        enemyID: enemyID,
         enemyLevel: 1,
         enemyHP: 100,
         enemyMP: 50,
@@ -62,10 +66,10 @@ function newGame(playerData){
 
 function updateGame(playerData){
   return gameDataCollection().then((gamedata) => {
-    
+    let id = playerData._id;
     return gamedata.updateOne({_id:id},{$set: playerData}).then((result) => {
       if(result.matchedCount !== 1)
-        throw "Game data not found "+id
+        throw "Game data not found " + id;
       return getGameDataById(id);
     });
   });

@@ -11,64 +11,86 @@
     <title>Browser RPG</title>
 </head>
 <body>
-    <div ng-app="activeGame" ng-controller="activeGameCtrl">
-        <div class="playerInfo">
-            <div class="playerLabels">
-                <p>Name: </p>
-                <p>Level: </p>
-                <p>HP: </p>
-                <p>MP: </p>
-                <p>Str: </p>
-                <p>Mag: </p>
-                <p>Def: </p>
-                <p>Res: </p>
-                <p>Agi: </p>
-                <p>Luck: </p>
+    <div class="gameScreen" ng-app="activeGame" ng-controller="activeGameCtrl">
+        <div class="statMenu">
+            <div class="playerInfo">
+                <div class="playerLabels">
+                    <p>Name: </p>
+                    <p>Level: </p>
+                    <p>HP: </p>
+                    <p>MP: </p>
+                    <p>Str: </p>
+                    <p>Mag: </p>
+                    <p>Def: </p>
+                    <p>Res: </p>
+                    <p>Agi: </p>
+                    <p>Luck: </p>
+                </div>
+                <div class="playerRawStats">
+                    <p>{{gamedata.playerData.name}}</p>
+                    <p>{{currPlayerStats.level}}</p>
+                    <p>{{currPlayerStats.HP}}</p>
+                    <p>{{currPlayerStats.MP}}</p>
+                    <p>{{currPlayerStats.str}}</p>
+                    <p>{{currPlayerStats.mag}}</p>
+                    <p>{{currPlayerStats.def}}</p>
+                    <p>{{currPlayerStats.res}}</p>
+                    <p>{{currPlayerStats.agi}}</p>
+                    <p>{{currPlayerStats.luck}}</p>
+                </div>
             </div>
-            <div class="playerRawStats">
-                <p>{{gamedata.playerData.name}}</p>
-                <p>{{currPlayerStats.level}}</p>
-                <p>{{currPlayerStats.HP}}</p>
-                <p>{{currPlayerStats.MP}}</p>
-                <p>{{currPlayerStats.str}}</p>
-                <p>{{currPlayerStats.mag}}</p>
-                <p>{{currPlayerStats.def}}</p>
-                <p>{{currPlayerStats.res}}</p>
-                <p>{{currPlayerStats.agi}}</p>
-                <p>{{currPlayerStats.luck}}</p>
+            <div class="enemyInfo">
+                <div class="enemyLabels">
+                    <p>Name: </p>
+                    <p>Level: </p>
+                    <p>HP: </p>
+                    <p>MP: </p>
+                    <p>Str: </p>
+                    <p>Mag: </p>
+                    <p>Def: </p>
+                    <p>Res: </p>
+                    <p>Agi: </p>
+                    <p>Luck: </p>
+                </div>
+                <div class="enemyRawStats">
+                    <p>{{gamedata.enemyData.name}}</p>
+                    <p>{{currEnemyStats.level}}</p>
+                    <p>{{currEnemyStats.HP}}</p>
+                    <p>{{currEnemyStats.MP}}</p>
+                    <p>{{currEnemyStats.str}}</p>
+                    <p>{{currEnemyStats.mag}}</p>
+                    <p>{{currEnemyStats.def}}</p>
+                    <p>{{currEnemyStats.res}}</p>
+                    <p>{{currEnemyStats.agi}}</p>
+                    <p>{{currEnemyStats.luck}}</p>
+                </div>
+            </div>
+            <div class="menu">
+                <button class="menuBtn" ng-click="action('attack')" ng-disabled="disabled.attack">Attack</button>
+                <button class="menuBtn" ng-click="action('defend')" ng-disabled="disabled.defend">Defend</button>
+                <button class="menuBtn" ng-click="action('flee')" ng-disabled="disabled.flee">Flee</button>
+                <button class="menuBtn" ng-click="action('next')" ng-disabled="disabled.next">Next</button>
             </div>
         </div>
-        <div class="enemyInfo">
-            <div class="enemyLabels">
-                <p>Name: </p>
-                <p>Level: </p>
-                <p>HP: </p>
-                <p>MP: </p>
-                <p>Str: </p>
-                <p>Mag: </p>
-                <p>Def: </p>
-                <p>Res: </p>
-                <p>Agi: </p>
-                <p>Luck: </p>
-            </div>
-            <div class="enemyRawStats">
-                <p>{{gamedata.enemyData.name}}</p>
-                <p>{{currEnemyStats.level}}</p>
-                <p>{{currEnemyStats.HP}}</p>
-                <p>{{currEnemyStats.MP}}</p>
-                <p>{{currEnemyStats.str}}</p>
-                <p>{{currEnemyStats.mag}}</p>
-                <p>{{currEnemyStats.def}}</p>
-                <p>{{currEnemyStats.res}}</p>
-                <p>{{currEnemyStats.agi}}</p>
-                <p>{{currEnemyStats.luck}}</p>
-            </div>
-        </div>
-        <div class="menu">
-            <button class="menuBtn" ng-click="action('attack')">Attack</button>
-            <button class="menuBtn" ng-click="action('defend')">Defend</button>
-            <button class="menuBtn" ng-click="action('flee')">Flee</button>
-            <button class="menuBtn" ng-click="action('next')" disabled>Next</button>
+        <div class="log">
+            <ul>
+                <li>AAAAAAAAAA --[Attack]-&gt; Dark Elf: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Reaper: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Reaper: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Dark Elf: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Reaper: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Reaper: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Dark Elf: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Reaper: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Reaper: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Dark Elf: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Reaper: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Reaper: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Dark Elf: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Reaper: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Reaper: 5436721</li>
+                <li>AAAAAAAAAA --[Attack]-&gt; Dark Elf: 5436721</li>
+            </ul>
         </div>
     </div>
 </body>

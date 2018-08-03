@@ -3,11 +3,86 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
     $scope.gamedata;
     $scope.currPlayerStats;
     $scope.currEnemyStats;
+    $scope.disabled = {
+        attack: false,
+        defend: false,
+        flee: false,
+        next: true
+    }
+    $scope.playerLevelUp = false;
+    $scope.enemyLevelUp = 0;
     var sendData = {
         messageType: "loadPlayer"
     }
     $http.post('/game', sendData).then((responseGood) => {
         $scope.gamedata = responseGood.data;
+        $scope.updateScreen();
+    }, (responseBad) => {
+        alert("Error: Page load failed");
+    });
+
+    $scope.action = function(action) {
+        if (action === "attack") {
+            $scope.disabled.attack = true;
+            $scope.disabled.defend = true;
+            $scope.disabled.flee = true;
+            $scope.disabled.next = true;
+            sendData = {
+                messageType: "attack",
+                currPlayerStats: $scope.currPlayerStats,
+                currEnemyStats: $scope.currEnemyStats
+            }
+            $http.post('/game', sendData).then((responseGood) => {
+                // Turn1
+                $scope.currPlayerStats = responseGood.data.turn1.currPlayerStats;
+                $scope.currEnemyStats = responseGood.data.turn1.currEnemyStats;
+                
+                // Turn2
+                if (responseGood.data.death === 0) {
+                    $scope.currPlayerStats = responseGood.data.turn2.currPlayerStats;
+                    $scope.currEnemyStats = responseGood.data.turn2.currEnemyStats;
+                    $scope.disabled.attack = false;
+                    $scope.disabled.defend = false;
+                    $scope.disabled.flee = false;
+                } else {
+                    $scope.disabled.next = false;
+                    if (responseGood.data.death === 1) {
+                        $scope.enemyLevelUp = 1;
+                        if (responseGood.data.levelUp === true) {
+                            $scope.playerLevelUp = true;
+                        }
+                    } else if (responseGood.data.death === -1) {
+                        $scope.enemyLevelUp = -1;
+                    }
+                }
+            }, (responseBad) => {
+                alert("Error: Attack failed");
+            });
+        } else if (action === "next") {
+            $scope.disabled.next = true;
+            sendData = {
+                messageType: "next",
+                playerID: $scope.gamedata.playerData._id,
+                playerLevelUp: $scope.playerLevelUp,
+                enemyLevelUp: $scope.enemyLevelUp,
+                exp: $scope.currPlayerStats.exp
+            }
+            $http.post('/game', sendData).then((responseGood) => {
+                $scope.gamedata = responseGood.data;
+                $scope.updateScreen();
+                $scope.playerLevelUp = false;
+                $scope.enemyLevel = 0;
+                $scope.disabled.attack = false;
+                $scope.disabled.defend = false;
+                $scope.disabled.flee = false;
+                $scope.disabled.next = true;
+            }, (responseBad) => {
+                alert("Error: Next failed");
+            })
+        }
+    };
+
+    $scope.updateScreen = function() {
         $scope.currEnemyStats = {
             name: $scope.gamedata.enemyData.name,
             level: $scope.gamedata.playerData.enemyLevel,
@@ -51,42 +126,5 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
             },
             exp: $scope.gamedata.playerData.exp
         }
-    }, (responseBad) => {
-        alert(responseBad.data);
-    });
-
-    $scope.action = function(action) {
-        if (action === "attack") {
-            //send through post, handle based on action name, calculate damage/stat/status changes
-            //return results
-            sendData = {
-                messageType: "attack",
-                currPlayerStats: $scope.currPlayerStats,
-                currEnemyStats: $scope.currEnemyStats
-            }
-            $http.post('/game', sendData).then((responseGood) => {
-                // Turn1
-                setTimeout(function () {
-                    $scope.$apply(function(){
-                        $scope.currPlayerStats = responseGood.data.turn1.currPlayerStats;
-                        $scope.currEnemyStats = responseGood.data.turn1.currEnemyStats;
-                    });
-                }, 10);
-                
-                if (responseGood.data.death === 0) {
-                    setTimeout(function () {
-                        $scope.$apply(function(){
-                            $scope.currPlayerStats = responseGood.data.turn2.currPlayerStats;
-                            $scope.currEnemyStats = responseGood.data.turn2.currEnemyStats;
-                        });
-                    }, 1000);
-                    
-                    
-                }
-                // Turn2
-            }, (responseBad) => {
-                alert(responseBad.data);
-            });
-        }
-    };
+    }
 });
