@@ -50,19 +50,20 @@ function createTurns(gameState) {
 
         // Turn 2 (Enemy acts)
         // Add AI later, for now, just attack
+        turns.turn2.currPlayerStats = turns.turn1.currPlayerStats;
+        turns.turn2.currEnemyStats = turns.turn1.currEnemyStats;
         miss = calculateMiss(turns.turn1.currEnemyStats.agi, turns.turn1.currPlayerStats.agi);
         if (!miss) {
             let enemyDamage = calculateDamage(turns.turn1.currEnemyStats.str, turns.turn1.currPlayerStats.def);
-            turns.turn2.curPlayerStats.HP -= enemyDamage;
+            turns.turn2.currPlayerStats.HP -= enemyDamage;
             if (turns.turn2.currPlayerStats.HP <= 0) {
                 turns.turn2.currPlayerStats.HP = 0;
                 turns.death = -1;
-                return turns;
             }
         } else {
             turns.turn2.message = gameState.currEnemyStats.name + " missed!";
-            return turns;
         }
+        return turns;
     }
 }
 
@@ -76,7 +77,7 @@ function calculateDamage(attackerStat, targetStat) {
 }
 
 function calculateMiss(attackerAgi, targetAgi) {
-    let missChance = (attackerAgi - targetAgi) + rand(0, Math.round(attackerAgi / 5));
+    let missChance = (attackerAgi - targetAgi) + rand(0, Math.round(attackerAgi / 2));
     if (missChance >= 0) {
         return false;
     } else {

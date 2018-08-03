@@ -40,7 +40,7 @@ const gamePost = async (req, res) => {
         res.status(200).send(result);
 
     } else {// make sure to keep this last!!!!!
-        let turns = gameCalc.createTurns(req.body);
+        let turns = await gameCalc.createTurns(req.body);
         res.status(200).send(turns);
     }
     return;

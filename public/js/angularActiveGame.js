@@ -66,7 +66,23 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
             }
             $http.post('/game', sendData).then((responseGood) => {
                 // Turn1
-                $timeout(function() { $scope.displayErrorMsg = false;}, 1000);
+                setTimeout(function () {
+                    $scope.$apply(function(){
+                        $scope.currPlayerStats = responseGood.data.turn1.currPlayerStats;
+                        $scope.currEnemyStats = responseGood.data.turn1.currEnemyStats;
+                    });
+                }, 10);
+                
+                if (responseGood.data.death === 0) {
+                    setTimeout(function () {
+                        $scope.$apply(function(){
+                            $scope.currPlayerStats = responseGood.data.turn2.currPlayerStats;
+                            $scope.currEnemyStats = responseGood.data.turn2.currEnemyStats;
+                        });
+                    }, 1000);
+                    
+                    
+                }
                 // Turn2
             }, (responseBad) => {
                 alert(responseBad.data);
