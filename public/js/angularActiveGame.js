@@ -11,6 +11,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
     }
     $scope.playerLevelUp = false;
     $scope.enemyLevelUp = 0;
+    $scope.messages = [];
     var sendData = {
         messageType: "loadPlayer"
     }
@@ -36,11 +37,13 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                 // Turn1
                 $scope.currPlayerStats = responseGood.data.turn1.currPlayerStats;
                 $scope.currEnemyStats = responseGood.data.turn1.currEnemyStats;
+                $scope.updateLog(responseGood.data.turn1.message);
                 
                 // Turn2
                 if (responseGood.data.death === 0) {
                     $scope.currPlayerStats = responseGood.data.turn2.currPlayerStats;
                     $scope.currEnemyStats = responseGood.data.turn2.currEnemyStats;
+                    $scope.updateLog(responseGood.data.turn2.message);
                     $scope.disabled.attack = false;
                     $scope.disabled.defend = false;
                     $scope.disabled.flee = false;
@@ -80,6 +83,13 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                 alert("Error: Next failed");
             })
         }
+    };
+
+    $scope.updateLog = function(message) {
+        if ($scope.messages.length === 16) {
+            $scope.messages.splice(0, 1);
+        }
+        $scope.messages.push(message);
     };
 
     $scope.updateScreen = function() {

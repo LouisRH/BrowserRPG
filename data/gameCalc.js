@@ -27,9 +27,12 @@ function createTurns(gameState) {
     if (gameState.messageType === "attack") {
         // Turn 1 (Player acts)
         let miss = calculateMiss(gameState.currPlayerStats.agi, gameState.currEnemyStats.agi);
+        let turn1Message = gameState.currPlayerStats.name + " --[Attack]-> " + gameState.currEnemyStats.name + ": ";
         if (!miss) {
             let playerDamage = calculateDamage(gameState.currPlayerStats.str, gameState.currEnemyStats.def);
             turns.turn1.currEnemyStats.HP -= playerDamage;
+            turn1Message += playerDamage;
+            turns.turn1.message = turn1Message;
             if (turns.turn1.currEnemyStats.HP <= 0) {
                 turns.turn1.currEnemyStats.HP = 0;
                 turns.death = 1;
@@ -40,7 +43,8 @@ function createTurns(gameState) {
                 return turns;
             }
         } else {
-            turns.turn1.message = gameState.currPlayerStats.name + " missed!";
+            turn1Message += "miss";
+            turns.turn1.message = turn1Message;
         }
         // TODO Poison and regen calculation
         /*
@@ -56,15 +60,19 @@ function createTurns(gameState) {
         turns.turn2.currPlayerStats = turns.turn1.currPlayerStats;
         turns.turn2.currEnemyStats = turns.turn1.currEnemyStats;
         miss = calculateMiss(turns.turn1.currEnemyStats.agi, turns.turn1.currPlayerStats.agi);
+        let turn2Message = gameState.currPlayerStats.name + " <-[Attack]-- " + gameState.currEnemyStats.name + ": "
         if (!miss) {
             let enemyDamage = calculateDamage(turns.turn1.currEnemyStats.str, turns.turn1.currPlayerStats.def);
             turns.turn2.currPlayerStats.HP -= enemyDamage;
+            turn2Message += enemyDamage;
+            turns.turn2.message = turn2Message;
             if (turns.turn2.currPlayerStats.HP <= 0) {
                 turns.turn2.currPlayerStats.HP = 0;
                 turns.death = -1;
             }
         } else {
-            turns.turn2.message = gameState.currEnemyStats.name + " missed!";
+            turn2Message += "miss";
+            turns.turn2.message = turn2Message;
         }
         return turns;
     }
