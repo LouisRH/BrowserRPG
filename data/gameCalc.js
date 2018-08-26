@@ -88,7 +88,11 @@ function calculateDamage(attackerStat, targetStat) {
 }
 
 function calculateMiss(attackerAgi, targetAgi) {
-    let missChance = (attackerAgi - targetAgi) + rand(0, Math.round(attackerAgi * 1.5));
+    let agiInverse = attackerAgi - targetAgi;
+    if (agiInverse < (attackerAgi * -1)) {
+        agiInverse = attackerAgi * -1;
+    }
+    let missChance = agiInverse + rand(0, Math.round(attackerAgi * 1.5));
     if (missChance >= 0) {
         return false;
     } else {
@@ -172,16 +176,18 @@ function applyEnemyLevelChange(playerData, change) {
         luck: playerData.enemyLuck
     };
     if (change === 1) {
+        // Enemy level up
         newStats.level = playerData.enemyLevel + 1;
         newStats.HP = playerData.enemyHP + Math.round(playerData.enemyHP * (rand(30, 36) / 100));
         newStats.MP = playerData.enemyMP + Math.round(playerData.enemyMP * (rand(15, 21) / 100));
         newStats.str = playerData.enemyStr + Math.round(playerData.enemyStr * (rand(20, 26) / 100));
         newStats.mag = playerData.enemyMag + Math.round(playerData.enemyMag * (rand(20, 26) / 100));
-        newStats.def = playerData.enemyDef + Math.round(playerData.enemyDef * (rand(20, 26) / 100));
-        newStats.res = playerData.enemyRes + Math.round(playerData.enemyRes * (rand(20, 26) / 100));
-        newStats.agi = playerData.enemyAgi + Math.round(playerData.enemyAgi * (rand(20, 26) / 100));
+        newStats.def = playerData.enemyDef + Math.round(playerData.enemyDef * (rand(15, 21) / 100));
+        newStats.res = playerData.enemyRes + Math.round(playerData.enemyRes * (rand(15, 21) / 100));
+        newStats.agi = playerData.enemyAgi + Math.round(playerData.enemyAgi * (rand(15, 21) / 100));
         newStats.luck = playerData.enemyLuck + Math.round(playerData.enemyLuck * (rand(20, 26) / 100));
     } else if (change === -1 && playerData.enemyLevel > 1) {
+        // Enemy level down
         newStats.level = playerData.enemyLevel - 1;
         newStats.HP = playerData.enemyHP - Math.round(playerData.enemyHP * (rand(25, 31) / 100));
         newStats.MP = playerData.enemyMP - Math.round(playerData.enemyMP * (rand(10, 16) / 100));

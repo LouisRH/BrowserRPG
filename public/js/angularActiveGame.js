@@ -48,7 +48,6 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                     $scope.disabled.defend = false;
                     $scope.disabled.flee = false;
                 } else {
-                    $scope.updateLog(responseGood.data.turn2.message);
                     $scope.disabled.next = false;
                     if (responseGood.data.death === 1) {
                         $scope.enemyLevelUp = 1;
@@ -56,6 +55,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                             $scope.playerLevelUp = true;
                         }
                     } else if (responseGood.data.death === -1) {
+                        $scope.updateLog(responseGood.data.turn2.message);
                         $scope.enemyLevelUp = -1;
                     }
                 }
