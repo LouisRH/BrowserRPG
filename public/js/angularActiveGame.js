@@ -23,13 +23,13 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
     });
 
     $scope.action = function(action) {
-        if (action === "attack") {
+        if (action === "attack" || action === "defend" || action === "flee") {
             $scope.disabled.attack = true;
             $scope.disabled.defend = true;
             $scope.disabled.flee = true;
             $scope.disabled.next = true;
             sendData = {
-                messageType: "attack",
+                messageType: action,
                 currPlayerStats: $scope.currPlayerStats,
                 currEnemyStats: $scope.currEnemyStats
             }
@@ -50,14 +50,18 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                 } else {
                     $scope.disabled.next = false;
                     if (responseGood.data.death === 1) {
+                        $scope.updateLog(responseGood.data.turn1.currEnemyStats.name + " defeated!");
                         $scope.enemyLevelUp = 1;
                         if (responseGood.data.levelUp === true) {
+                            $scope.updateLog(responseGood.data.turn1.currPlayerStats.name + " leveled up!");
                             $scope.playerLevelUp = true;
                         }
                     } else if (responseGood.data.death === -1) {
                         $scope.updateLog(responseGood.data.turn2.message);
+                        $scope.updateLog(responseGood.data.turn1.currPlayerStats.name + " defeated...");
                         $scope.enemyLevelUp = -1;
                     }
+                    $scope.updateLog("Click 'Next' to continue.");
                 }
             }, (responseBad) => {
                 alert("Error: Attack failed");
@@ -137,5 +141,6 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
             },
             exp: $scope.gamedata.playerData.exp
         }
+        $scope.updateLog($scope.currEnemyStats.name + " approaches!");
     }
 });
