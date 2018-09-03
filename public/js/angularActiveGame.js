@@ -40,7 +40,10 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                 $scope.updateLog(responseGood.data.turn1.message);
                 
                 // Turn2
-                if (responseGood.data.death === 0) {
+                if (responseGood.data.flee === true) {
+                    $scope.disabled.next = false;
+                    $scope.updateLog("Click 'Next' to continue.");
+                } else if (responseGood.data.death === 0) {
                     $scope.currPlayerStats = responseGood.data.turn2.currPlayerStats;
                     $scope.currEnemyStats = responseGood.data.turn2.currEnemyStats;
                     $scope.updateLog(responseGood.data.turn2.message);

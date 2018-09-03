@@ -22,6 +22,7 @@ function createTurns(gameState) {
         },
         death: 0,
         levelUp: false,
+        flee: false
     }
     let defend = false;
     let turn1Message = "";
@@ -58,8 +59,20 @@ function createTurns(gameState) {
         }
     } else if (gameState.messageType === "defend") {
         defend = true;
-        turn1Message = gameState.currPlayerStats.name + "<-[Defend]->";
+        turn1Message = gameState.currPlayerStats.name + " <-[Defend]->";
         turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "flee") {
+        let flee = calculateFlee(turns.turn1.currPlayerStats.agi + turns.turn1.currPlayerStats.luck, turns.turn1.currEnemyStats.agi + turns.turn1.currEnemyStats.luck);
+        if (flee === true) {
+            turn1Message = "Escaped successfully!";
+            turns.turn1.message = turn1Message;
+            turns.flee = true;
+            turns.turn2 = null;
+            return turns;
+        } else {
+            turn1Message = "Escape failed...";
+            turns.turn1.message = turn1Message;
+        }
     }
     // TODO Poison and regen calculation
     /*
@@ -151,6 +164,22 @@ function calculateCrit(attackerLuck, targetLuck) {
             } else {
                 return false;
             }
+        }
+    }
+}
+
+function calculateFlee(playerFlee, enemyFlee) {
+    if (playerFlee > enemyFlee) {
+        return true;
+    } else {
+        let fleeChance = Math.round((playerFlee / enemyFlee) * 100);
+        if (fleeChance < 1) {
+            fleeChance = 1;
+        }
+        if (rand(fleeChance, 101) >= 80) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
@@ -313,6 +342,7 @@ module.exports = {
     calculateDamage: calculateDamage,
     calculateMiss: calculateMiss,
     calculateCrit: calculateCrit,
+    calculateFlee: calculateFlee,
     expCalc: expCalc,
     nextEnemy: nextEnemy,
     statRegulator: statRegulator,
