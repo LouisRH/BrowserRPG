@@ -12,6 +12,36 @@
 </head>
 <body>
     <div class="gameScreen" ng-app="activeGame" ng-controller="activeGameCtrl">
+        <div class="magic">
+            <div class="btnGroup">
+                <button class="magicBtn" ng-click="action('fire')" ng-disabled="disabled.magic">Fire: 5MP</button>
+                <button class="magicBtn" ng-click="action('cure')" ng-disabled="disabled.magic">Cure: 5MP</button>
+            </div>
+            <div class="btnGroup">
+                <button class="magicBtn" ng-click="action('protect')" ng-disabled="disabled.magic">Protect: 10MP</button>
+                <button class="magicBtn" ng-click="action('deprotect')" ng-disabled="disabled.magic">Deprotect: 10MP</button>
+            </div>
+            <div class="btnGroup">
+                <button class="magicBtn" ng-click="action('shell')" ng-disabled="disabled.magic">Shell: 10MP</button>
+                <button class="magicBtn" ng-click="action('deshell')" ng-disabled="disabled.magic">Deshell: 10MP</button>
+            </div>
+            <div class="btnGroup">
+                <button class="magicBtn" ng-click="action('bravery')" ng-disabled="disabled.magic">Bravery: 10MP</button>
+                <button class="magicBtn" ng-click="action('debrave')" ng-disabled="disabled.magic">Debrave: 10MP</button>
+            </div>
+            <div class="btnGroup">
+                <button class="magicBtn" ng-click="action('faith')" ng-disabled="disabled.magic">Faith: 10MP</button>
+                <button class="magicBtn" ng-click="action('defaith')" ng-disabled="disabled.magic">Defaith: 10MP</button>
+            </div>
+            <div class="btnGroup">
+                <button class="magicBtn" ng-click="action('haste')" ng-disabled="disabled.magic">Haste: 10MP</button>
+                <button class="magicBtn" ng-click="action('slow')" ng-disabled="disabled.magic">Slow: 10MP</button>
+            </div>
+            <div class="btnGroup">
+                <button class="magicBtn" ng-click="action('regen')" ng-disabled="disabled.magic">Regen: 15MP</button>
+                <button class="magicBtn" ng-click="action('poison')" ng-disabled="disabled.magic">Poison: 15MP</button>
+            </div>
+        </div>
         <div class="statMenu">
             <div class="playerInfo">
                 <div class="playerLabels">
