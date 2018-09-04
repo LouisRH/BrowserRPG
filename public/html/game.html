@@ -59,13 +59,13 @@
                 <div class="playerRawStats">
                     <p>{{gamedata.playerData.name}}</p>
                     <p>{{currPlayerStats.level}}</p>
-                    <p>{{currPlayerStats.HP}}</p>
+                    <p ng-class="{'color-white': currPlayerStats.status.flux === 0, 'color-yellow': currPlayerStats.status.flux === 1, 'color-red': currPlayerStats.status.flux === -1}">{{currPlayerStats.HP}}</p>
                     <p>{{currPlayerStats.MP}}</p>
-                    <p>{{currPlayerStats.str}}</p>
-                    <p>{{currPlayerStats.mag}}</p>
-                    <p>{{currPlayerStats.def}}</p>
-                    <p>{{currPlayerStats.res}}</p>
-                    <p>{{currPlayerStats.agi}}</p>
+                    <p ng-class="{'color-white': currPlayerStats.status.str === 0, 'color-yellow': currPlayerStats.status.str === 1, 'color-red': currPlayerStats.status.str === -1}">{{currPlayerStats.str}}</p>
+                    <p ng-class="{'color-white': currPlayerStats.status.mag === 0, 'color-yellow': currPlayerStats.status.mag === 1, 'color-red': currPlayerStats.status.mag === -1}">{{currPlayerStats.mag}}</p>
+                    <p ng-class="{'color-white': currPlayerStats.status.def === 0, 'color-yellow': currPlayerStats.status.def === 1, 'color-red': currPlayerStats.status.def === -1}">{{currPlayerStats.def}}</p>
+                    <p ng-class="{'color-white': currPlayerStats.status.res === 0, 'color-yellow': currPlayerStats.status.res === 1, 'color-red': currPlayerStats.status.res === -1}">{{currPlayerStats.res}}</p>
+                    <p ng-class="{'color-white': currPlayerStats.status.agi === 0, 'color-yellow': currPlayerStats.status.agi === 1, 'color-red': currPlayerStats.status.agi === -1}">{{currPlayerStats.agi}}</p>
                     <p>{{currPlayerStats.luck}}</p>
                 </div>
             </div>
@@ -85,13 +85,13 @@
                 <div class="enemyRawStats">
                     <p>{{gamedata.enemyData.name}}</p>
                     <p>{{currEnemyStats.level}}</p>
-                    <p>{{currEnemyStats.HP}}</p>
+                    <p ng-class="{'color-white': currEnemyStats.status.flux === 0, 'color-yellow': currEnemyStats.status.flux === 1, 'color-red': currEnemyStats.status.flux === -1}">{{currEnemyStats.HP}}</p>
                     <p>{{currEnemyStats.MP}}</p>
-                    <p>{{currEnemyStats.str}}</p>
-                    <p>{{currEnemyStats.mag}}</p>
-                    <p>{{currEnemyStats.def}}</p>
-                    <p>{{currEnemyStats.res}}</p>
-                    <p>{{currEnemyStats.agi}}</p>
+                    <p ng-class="{'color-white': currEnemyStats.status.str === 0, 'color-yellow': currEnemyStats.status.str === 1, 'color-red': currEnemyStats.status.str === -1}">{{currEnemyStats.str}}</p>
+                    <p ng-class="{'color-white': currEnemyStats.status.mag === 0, 'color-yellow': currEnemyStats.status.mag === 1, 'color-red': currEnemyStats.status.mag === -1}">{{currEnemyStats.mag}}</p>
+                    <p ng-class="{'color-white': currEnemyStats.status.def === 0, 'color-yellow': currEnemyStats.status.def === 1, 'color-red': currEnemyStats.status.def === -1}">{{currEnemyStats.def}}</p>
+                    <p ng-class="{'color-white': currEnemyStats.status.res === 0, 'color-yellow': currEnemyStats.status.res === 1, 'color-red': currEnemyStats.status.res === -1}">{{currEnemyStats.res}}</p>
+                    <p ng-class="{'color-white': currEnemyStats.status.agi === 0, 'color-yellow': currEnemyStats.status.agi === 1, 'color-red': currEnemyStats.status.agi === -1}">{{currEnemyStats.agi}}</p>
                     <p>{{currEnemyStats.luck}}</p>
                 </div>
             </div>

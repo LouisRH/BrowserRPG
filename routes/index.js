@@ -41,9 +41,6 @@ const gamePost = async (req, res) => {
 
     } else if (req.body.messageType === "next") {
         let currGameData = await gameData.getGameDataById(req.body.playerID);
-        //console.log(req.body.playerID);
-        //console.log(enemyData);
-        //console.log(gameCalc);
         let newEnemy = await enemyData.pickRandomEnemy();
         let playerData = await gameCalc.nextEnemy(req.body, currGameData, newEnemy);
         let currPlayerData = await gameData.updateGame(playerData);

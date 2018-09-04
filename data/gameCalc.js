@@ -10,7 +10,6 @@ function createTurns(gameState) {
         turn1: {
             message: "",
             statusMessage: "",
-            flee: false,
             currPlayerStats: gameState.currPlayerStats,
             currEnemyStats: gameState.currEnemyStats
         },
@@ -32,7 +31,7 @@ function createTurns(gameState) {
         let miss = calculateMiss(gameState.currPlayerStats.agi, gameState.currEnemyStats.agi);
         turn1Message = gameState.currPlayerStats.name + " --[Attack]-> " + gameState.currEnemyStats.name + ": ";
         if (!miss) {
-            let playerDamage = calculateDamage(gameState.currPlayerStats.str, gameState.currEnemyStats.def);
+            let playerDamage = calculateDamage(gameState.currPlayerStats.str, gameState.currEnemyStats.def, 1);
             let crit = calculateCrit(gameState.currPlayerStats.luck, gameState.currEnemyStats.luck);
             if (crit === true) {
                 playerDamage = Math.round(playerDamage * 1.5);
@@ -73,6 +72,126 @@ function createTurns(gameState) {
             turn1Message = "Escape failed...";
             turns.turn1.message = turn1Message;
         }
+    } else if (gameState.messageType === "fire") {
+        let playerDamage = calculateDamage(gameState.currPlayerStats.mag, gameState.currEnemyStats.res, 1.1);
+        turn1Message = gameState.currPlayerStats.name + " --[Fire]-> " + gameState.currEnemyStats.name + ": " + playerDamage;
+        turns.turn1.currEnemyStats.HP -= playerDamage;
+        turns.turn1.currPlayerStats.MP -= 5;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turns.turn1.message = turn1Message;
+        if (turns.turn1.currEnemyStats.HP <= 0) {
+            turns.turn1.currEnemyStats.HP = 0;
+            turns.death = 1;
+            let expResult = expCalc(turns.turn1.currPlayerStats.exp, turns.turn1.currPlayerStats.level, turns.turn1.currEnemyStats.level);
+            turns.turn1.currPlayerStats.exp = expResult.exp;
+            turns.levelUp = expResult.levelUp;
+            turns.turn2 = null;
+            return turns;
+        }
+    } else if (gameState.messageType === "cure") {
+        let cureVal = calculateCure(turns.turn1.currPlayerStats.mag);
+        turns.turn1.currPlayerStats.HP += cureVal;
+        if (turns.turn1.currPlayerStats.HP > gameState.currPlayerStats.MaxHP) {
+            turns.turn1.currPlayerStats.HP = gameState.currPlayerStats.MaxHP;
+        }
+        turns.turn1.currPlayerStats.MP -= 5;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " <-[Cure]->: " + cureVal;
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "protect") {
+        turns.turn1.currPlayerStats.def = gameState.baseStats.def + Math.round(gameState.baseStats.def * 0.2);
+        turns.turn1.currPlayerStats.status.def = 1;
+        turns.turn1.currPlayerStats.MP -= 10;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " <-[Protect]->";
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "deprotect") {
+        turns.turn1.currEnemyStats.def = Math.round(gameState.baseStats.enemyDef * (gameState.enemyScale.defScale / 100)) - Math.round(Math.round(gameState.baseStats.enemyDef * (gameState.enemyScale.defScale / 100)) * 0.2);
+        turns.turn1.currEnemyStats.status.def = -1;
+        turns.turn1.currPlayerStats.MP -= 10;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " --[Deprotect]-> " + gameState.currEnemyStats.name;
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "shell") {
+        turns.turn1.currPlayerStats.res = gameState.baseStats.res + Math.round(gameState.baseStats.res * 0.2);
+        turns.turn1.currPlayerStats.status.res = 1;
+        turns.turn1.currPlayerStats.MP -= 10;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " <-[Shell]->";
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "deshell") {
+        turns.turn1.currEnemyStats.res = Math.round(gameState.baseStats.enemyRes * (gameState.enemyScale.resScale / 100)) - Math.round(Math.round(gameState.baseStats.enemyRes * (gameState.enemyScale.resScale / 100)) * 0.2);
+        turns.turn1.currEnemyStats.status.res = -1;
+        turns.turn1.currPlayerStats.MP -= 10;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " --[Deshell]-> " + gameState.currEnemyStats.name;
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "bravery") {
+        turns.turn1.currPlayerStats.str = gameState.baseStats.str + Math.round(gameState.baseStats.str * 0.2);
+        turns.turn1.currPlayerStats.status.str = 1;
+        turns.turn1.currPlayerStats.MP -= 10;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " <-[Bravery]->";
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "debrave") {
+        turns.turn1.currEnemyStats.str = Math.round(gameState.baseStats.enemyStr * (gameState.enemyScale.strScale / 100)) - Math.round(Math.round(gameState.baseStats.enemyStr * (gameState.enemyScale.strScale / 100)) * 0.2);
+        turns.turn1.currEnemyStats.status.str = -1;
+        turns.turn1.currPlayerStats.MP -= 10;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " --[Debrave]-> " + gameState.currEnemyStats.name;
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "faith") {
+        turns.turn1.currPlayerStats.mag = gameState.baseStats.mag + Math.round(gameState.baseStats.mag * 0.2);
+        turns.turn1.currPlayerStats.status.mag = 1;
+        turns.turn1.currPlayerStats.MP -= 10;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " <-[Faith]->";
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "defaith") {
+        turns.turn1.currEnemyStats.mag = Math.round(gameState.baseStats.enemyMag * (gameState.enemyScale.magScale / 100)) - Math.round(Math.round(gameState.baseStats.enemyMag * (gameState.enemyScale.magScale / 100)) * 0.2);
+        turns.turn1.currEnemyStats.status.mag = -1;
+        turns.turn1.currPlayerStats.MP -= 10;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " --[Defaith]-> " + gameState.currEnemyStats.name;
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "haste") {
+        turns.turn1.currPlayerStats.agi = gameState.baseStats.agi + Math.round(gameState.baseStats.agi * 0.2);
+        turns.turn1.currPlayerStats.status.agi = 1;
+        turns.turn1.currPlayerStats.MP -= 10;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " <-[Haste]->";
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "slow") {
+        turns.turn1.currEnemyStats.agi = Math.round(gameState.baseStats.enemyAgi * (gameState.enemyScale.agiScale / 100)) - Math.round(Math.round(gameState.baseStats.enemyAgi * (gameState.enemyScale.agiScale / 100)) * 0.2);
+        turns.turn1.currEnemyStats.status.agi = -1;
+        turns.turn1.currPlayerStats.MP -= 10;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " --[Slow]-> " + gameState.currEnemyStats.name;
+        turns.turn1.message = turn1Message;
     }
     // TODO Poison and regen calculation
     /*
@@ -94,7 +213,7 @@ function createTurns(gameState) {
         if (defend === true) {
             tempDef *= 2;
         }
-        let enemyDamage = calculateDamage(turns.turn1.currEnemyStats.str, tempDef);
+        let enemyDamage = calculateDamage(turns.turn1.currEnemyStats.str, tempDef, 1);
         let crit = calculateCrit(gameState.currEnemyStats.luck, gameState.currPlayerStats.luck);
         if (crit === true) {
             enemyDamage = Math.round(enemyDamage * 1.5);
@@ -117,13 +236,18 @@ function createTurns(gameState) {
     return turns;
 }
 
-function calculateDamage(attackerStat, targetStat) {
+function calculateDamage(attackerStat, targetStat, modifier) {
+    attackerStat = Math.round(attackerStat * modifier);
     let baseDamage = ((attackerStat * 10) - (targetStat * 5));
     let damage = baseDamage + rand(0, Math.round(baseDamage / 3));
     if (damage <= 0) {
         damage = 1;
     }
     return damage;
+}
+
+function calculateCure(mag) {
+    return (mag * 10) + rand(1, mag);
 }
 
 function calculateMiss(attackerAgi, targetAgi) {
@@ -215,8 +339,6 @@ function expCalc(currExp, playerLevel, enemyLevel) {
 }
 
 function nextEnemy(messageData, playerData, newEnemy) {
-    //let playerData = await gameData.getGameDataById(messageData.playerID);
-    //let newEnemy = await enemyData.pickRandomEnemy();
     playerData.enemyID = newEnemy._id;
     playerData.exp = messageData.exp;
     let newPlayerStats = null;
@@ -340,6 +462,7 @@ module.exports = {
     rand: rand,
     createTurns: createTurns,
     calculateDamage: calculateDamage,
+    calculateCure: calculateCure,
     calculateMiss: calculateMiss,
     calculateCrit: calculateCrit,
     calculateFlee: calculateFlee,

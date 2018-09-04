@@ -7,6 +7,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
         attack: false,
         defend: false,
         flee: false,
+        magic: false,
         next: true
     }
     $scope.playerLevelUp = false;
@@ -23,15 +24,38 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
     });
 
     $scope.action = function(action) {
-        if (action === "attack" || action === "defend" || action === "flee") {
+        // Check current MP, send rejection message if not enough
+        if (((action === "fire" || action === "cure") && $scope.currPlayerStats.MP < 5) ||
+            ((action === "protect" || action === "deprotect" || action === "shell" || action === "deshell" ||
+              action === "bravery" || action === "debrave" || action === "faith" || action === "defaith" ||
+              action === "haste" || action === "slow") && $scope.currPlayerStats.MP < 10) ||
+            ((action === "regen" || action === "poison") && $scope.currPlayerStats.MP < 15)) {
+            $scope.updateLog("Not enough MP!");
+        } else if ((action === "protect" && $scope.currPlayerStats.status.def === 1) || 
+        (action === "deprotect" && $scope.currEnemyStats.status.def === -1) || 
+        (action === "shell" && $scope.currPlayerStats.status.res === 1) || 
+        (action === "deshell" && $scope.currEnemyStats.status.res === -1) || 
+        (action === "bravery" && $scope.currPlayerStats.status.str === 1) || 
+        (action === "debrave" && $scope.currEnemyStats.status.str === -1) || 
+        (action === "faith" && $scope.currPlayerStats.status.mag === 1) || 
+        (action === "defaith" && $scope.currEnemyStats.status.mag === -1) || 
+        (action === "haste" && $scope.currPlayerStats.status.agi === 1) || 
+        (action === "slow" && $scope.currEnemyStats.status.agi === -1) || 
+        (action === "regen" && $scope.currPlayerStats.status.flux === 1) || 
+        (action === "poison" && $scope.currEnemyStats.status.flux === -1)) {
+            $scope.updateLog("Status already in effect!");
+        } else if (action !== "next") {
             $scope.disabled.attack = true;
             $scope.disabled.defend = true;
             $scope.disabled.flee = true;
+            $scope.disabled.magic = true;
             $scope.disabled.next = true;
             sendData = {
                 messageType: action,
                 currPlayerStats: $scope.currPlayerStats,
-                currEnemyStats: $scope.currEnemyStats
+                currEnemyStats: $scope.currEnemyStats,
+                baseStats: $scope.gamedata.playerData,
+                enemyScale: $scope.gamedata.enemyData
             }
             $http.post('/game', sendData).then((responseGood) => {
                 // Turn1
@@ -50,6 +74,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                     $scope.disabled.attack = false;
                     $scope.disabled.defend = false;
                     $scope.disabled.flee = false;
+                    $scope.disabled.magic = false;
                 } else {
                     $scope.disabled.next = false;
                     if (responseGood.data.death === 1) {
@@ -86,6 +111,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                 $scope.disabled.attack = false;
                 $scope.disabled.defend = false;
                 $scope.disabled.flee = false;
+                $scope.disabled.magic = false;
                 $scope.disabled.next = true;
             }, (responseBad) => {
                 alert("Error: Next failed");
@@ -119,6 +145,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                 mag: 0,
                 def: 0,
                 res: 0,
+                agi: 0,
                 flux: 0
             }
         }
@@ -140,6 +167,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                 mag: 0,
                 def: 0,
                 res: 0,
+                agi: 0,
                 flux: 0
             },
             exp: $scope.gamedata.playerData.exp

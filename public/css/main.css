@@ -78,7 +78,7 @@ ul {
     border-radius: 5px;
     margin-top: 5px;
     width: 300px;
-    padding: 3px 0px 0px 5px;
+    padding: 5px 0px 0px 5px;
     
 }
 
@@ -90,16 +90,28 @@ ul {
 
 .magicBtn {
     width: 140px;
-    height: 30px;
+    height: 35px;
     font-size: 15px;
 }
 
 .btnGroup {
-    padding: 8px 5px 5px 5px;
+    padding: 3px 5px 5px 5px;
 }
 
 input, button {
     background-color: black;
     color: white;
     border-radius: 3px;
+}
+
+.color-white {
+    color: white;
+}
+
+.color-yellow {
+    color: yellow;
+}
+
+.color-red {
+    color: red;
 }
