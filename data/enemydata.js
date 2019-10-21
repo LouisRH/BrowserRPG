@@ -43,6 +43,7 @@ function newEnemy(enemyData){
 
   function seedEnemies(){
     return enemyDataCollection().then(async (enemydata) => {
+        console.log("Seeding Enemy Database");
   
         let bandit = await newEnemy({
             id: 1,
