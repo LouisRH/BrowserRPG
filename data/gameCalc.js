@@ -24,10 +24,24 @@ function createTurns(gameState) {
         flee: false
     }
     let defend = false;
+    
+    // Turn 1 (Player acts)
+    turns = calculatePlayerTurn(gameState, turns);
+    if (gameState.messageType === "defend") {
+        defend = true;
+    } else if (turns.death === 1) {
+        return turns;
+    }
+    
+    // Turn 2 (Enemy acts)
+    turns = calculateEnemyTurn(gameState, turns, defend);
+    return turns;
+}
+
+function calculatePlayerTurn(gameState, turns) {
     let turn1Message = "";
 
     if (gameState.messageType === "attack") {
-        // Turn 1 (Player acts)
         let miss = calculateMiss(gameState.currPlayerStats.agi, gameState.currEnemyStats.agi);
         turn1Message = gameState.currPlayerStats.name + " --[Attack]-> " + gameState.currEnemyStats.name + ": ";
         if (!miss) {
@@ -57,7 +71,6 @@ function createTurns(gameState) {
             turns.turn1.message = turn1Message;
         }
     } else if (gameState.messageType === "defend") {
-        defend = true;
         turn1Message = gameState.currPlayerStats.name + " <-[Defend]->";
         turns.turn1.message = turn1Message;
     } else if (gameState.messageType === "flee") {
@@ -201,8 +214,10 @@ function createTurns(gameState) {
             poisonDamage = gameState.currPlayerStats.HP - 1;
         }
     }*/
+    return turns;
+}
 
-    // Turn 2 (Enemy acts)
+function calculateEnemyTurn(gameState, turns, defend) {
     // Add AI later, for now, just attack
     turns.turn2.currPlayerStats = turns.turn1.currPlayerStats;
     turns.turn2.currEnemyStats = turns.turn1.currEnemyStats;
