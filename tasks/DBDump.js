@@ -3,7 +3,7 @@ const gameData = data.gamedata;
 const enemyData = data.enemydata;
 
 async function dumpDb(){
-    console.log("Printing all saved games in db");
+    console.log("Printing all saved games");
     let savedGames = await gameData.listAllGames();
     console.log(savedGames);
     console.log("Printing all enemies");
