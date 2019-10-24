@@ -6,6 +6,7 @@ function rand(min, max) {
 }
 
 function createTurns(gameState) {
+    // Both the player's turn and the enemy's turn are computed before the data is sent back to the front end.
     let turns = {
         turn1: {
             message: "",
@@ -205,15 +206,41 @@ function calculatePlayerTurn(gameState, turns) {
         }
         turn1Message = gameState.currPlayerStats.name + " --[Slow]-> " + gameState.currEnemyStats.name;
         turns.turn1.message = turn1Message;
-    }
-    // TODO Poison and regen calculation
-    /*
-    if (gameState.currPlayerStats.status.flux === -1) {
-        let poisonDamage = Math.round(gameState.currPlayerStats.MaxHP / 10);
-        if (gameState.currPlayerStats.HP - poisonDamage <= 0) {
-            poisonDamage = gameState.currPlayerStats.HP - 1;
+    } else if (gameState.messageType === "regen") {
+        turns.turn1.currPlayerStats.status.flux = 1;
+        turns.turn1.currPlayerStats.MP -= 15;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
         }
-    }*/
+        turn1Message = gameState.currPlayerStats.name + " <-[Regen]->";
+        turns.turn1.message = turn1Message;
+    } else if (gameState.messageType === "poison") {
+        turns.turn1.currEnemyStats.status.flux = -1;
+        turns.turn1.currPlayerStats.MP -= 15;
+        if (turns.turn1.currPlayerStats.MP < 0) {
+            turns.turn1.currPlayerStats.MP = 0
+        }
+        turn1Message = gameState.currPlayerStats.name + " --[Poison]-> " + gameState.currEnemyStats.name;
+        turns.turn1.message = turn1Message;
+    }
+    
+    // After the player has taken action, they may recover health from regen, or take damage from poison.
+    if (gameState.currPlayerStats.status.flux === 1) {
+        let regenVal = Math.round(gameState.currPlayerStats.MaxHP / 10);
+        turns.turn1.currPlayerStats.HP += regenVal;
+        if (turns.turn1.currPlayerStats.HP > gameState.currPlayerStats.MaxHP) {
+            turns.turn1.currPlayerStats.HP = gameState.currPlayerStats.MaxHP;
+        }
+        turns.turn1.statusMessage = gameState.currPlayerStats.name + " <-[Regen]->: " + regenVal;
+    } else if (gameState.currPlayerStats.status.flux === -1) {
+        let poisonDamage = Math.round(gameState.currPlayerStats.MaxHP / 10);
+        turns.turn1.currPlayerStats.HP -= poisonDamage;
+        if (turns.turn1.currPlayerStats.HP <= 0) {
+            turns.turn1.currPlayerStats.HP = 1;
+        }
+        turns.turn1.statusMessage = gameState.currPlayerStats.name + " <-[Poison]->: " + poisonDamage;
+    }
+
     return turns;
 }
 
@@ -247,6 +274,22 @@ function calculateEnemyTurn(gameState, turns, defend) {
     } else {
         turn2Message += "miss";
         turns.turn2.message = turn2Message;
+    }
+
+    if (gameState.currEnemyStats.status.flux === 1) {
+        let regenVal = Math.round(gameState.currEnemyStats.MaxHP / 10);
+        turns.turn2.currEnemyStats.HP += regenVal;
+        if (turns.turn2.currEnemyStats.HP > gameState.currEnemyStats.MaxHP) {
+            turns.turn2.currEnemyStats.HP = gameState.currEnemyStats.MaxHP;
+        }
+        turns.turn2.statusMessage = gameState.currEnemyStats.name + " <-[Regen]->: " + regenVal;
+    } else if (gameState.currEnemyStats.status.flux === -1) {
+        let poisonDamage = Math.round(gameState.currEnemyStats.MaxHP / 10);
+        turns.turn2.currEnemyStats.HP -= poisonDamage;
+        if (turns.turn2.currEnemyStats.HP <= 0) {
+            turns.turn2.currEnemyStats.HP = 1;
+        }
+        turns.turn2.statusMessage = gameState.currEnemyStats.name + " <-[Poison]->: " + poisonDamage;
     }
     return turns;
 }

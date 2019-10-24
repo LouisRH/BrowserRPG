@@ -13,4 +13,4 @@ To start, run the following commands:
 
 Navigate to `http://localhost:3000` to begin the game.
 
-Please note that this application is a work-in-progress. Currently, the "Regen" and "Poison" spells, as well as the enemy AI have not been fully implemented. These features will be completed sometime in the near future.
+Please note that this application is a work-in-progress. Currently, the enemy AI has not been fully implemented. This feature will be completed sometime in the near future.

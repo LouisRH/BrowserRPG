@@ -24,7 +24,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
     });
 
     $scope.action = function(action) {
-        // Check current MP, send rejection message if not enough
+        // Check current MP, send rejection message if not enough / Prevent redundant spellcasting
         if (((action === "fire" || action === "cure") && $scope.currPlayerStats.MP < 5) ||
             ((action === "protect" || action === "deprotect" || action === "shell" || action === "deshell" ||
               action === "bravery" || action === "debrave" || action === "faith" || action === "defaith" ||
@@ -62,6 +62,9 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                 $scope.currPlayerStats = responseGood.data.turn1.currPlayerStats;
                 $scope.currEnemyStats = responseGood.data.turn1.currEnemyStats;
                 $scope.updateLog(responseGood.data.turn1.message);
+                if (responseGood.data.turn1.statusMessage !== "") {
+                    $scope.updateLog(responseGood.data.turn1.statusMessage);
+                }
                 
                 // Turn2
                 if (responseGood.data.flee === true) {
@@ -71,6 +74,9 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                     $scope.currPlayerStats = responseGood.data.turn2.currPlayerStats;
                     $scope.currEnemyStats = responseGood.data.turn2.currEnemyStats;
                     $scope.updateLog(responseGood.data.turn2.message);
+                    if (responseGood.data.turn2.statusMessage !== "") {
+                        $scope.updateLog(responseGood.data.turn2.statusMessage);
+                    }
                     $scope.disabled.attack = false;
                     $scope.disabled.defend = false;
                     $scope.disabled.flee = false;
@@ -127,6 +133,9 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
     };
 
     $scope.updateScreen = function() {
+        // For both the player and the enemy, the status json stores information relating to which 
+        // buffs and debuffs are currently applied. 0 means the stat is neutral, -1 means the stat is affected by a debuff,
+        // and 1 means the stat is affected by a buff.
         $scope.currEnemyStats = {
             name: $scope.gamedata.enemyData.name,
             level: $scope.gamedata.playerData.enemyLevel,
