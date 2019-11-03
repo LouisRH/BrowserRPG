@@ -102,6 +102,8 @@ When you defeat an enemy, you gain experience points (which are not visible). Af
 
 Defeating an enemy will also cause the next enemy to be 1 level stronger than the previous one. Conversely, if you are defeated by an enemy, the next enemy you face will be one level lower. You also gain more experience from defeating enemies that are a higher level than you, and vice versa.
 
+Please note that if you flee from an enemy, the next enemy's level will not change. This should be used if you do not think you can defeat the current enemy, and you do not want to reduce the enemy's level.
+
 # Enemies
 
 There are many different enemies you can face, each one chosen at random. Different types of enemies will have variations in their stats, as well as the actions they perform. For example, an Orc will have high Str and HP, but low Agi. It will also be biased towards using the Attack and Bravery commands, rather than Fire or Deshell.
