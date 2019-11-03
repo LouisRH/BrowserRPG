@@ -30,7 +30,24 @@ function newEnemy(enemyData){
           defScale: enemyData.defScale,
           resScale: enemyData.resScale,
           agiScale: enemyData.agiScale,
-          luckScale: enemyData.agiScale
+          luckScale: enemyData.luckScale,
+          aiVals: {
+              attack: enemyData.aiVals.attack,
+              fire: enemyData.aiVals.fire,
+              cure: enemyData.aiVals.cure,
+              protect: enemyData.aiVals.protect,
+              deprotect: enemyData.aiVals.deprotect,
+              shell: enemyData.aiVals.shell,
+              deshell: enemyData.aiVals.deshell,
+              bravery: enemyData.aiVals.bravery,
+              debrave: enemyData.aiVals.debrave,
+              faith: enemyData.aiVals.faith,
+              defaith: enemyData.aiVals.defaith,
+              haste: enemyData.aiVals.haste,
+              slow: enemyData.aiVals.slow,
+              regen: enemyData.aiVals.regen,
+              poison: enemyData.aiVals.poison
+          }
       };
   
       return enemydata.insertOne(newEnemyData).then((newInsertInformation) => {
@@ -55,7 +72,24 @@ function newEnemy(enemyData){
             defScale: 100,
             resScale: 100,
             agiScale: 100,
-            luckScale: 100
+            luckScale: 100,
+            aiVals: {
+                attack: 5,
+                fire: 5,
+                cure: 0,
+                protect: 5,
+                deprotect: 5,
+                shell: 5,
+                deshell: 5,
+                bravery: 5,
+                debrave: 5,
+                faith: 5,
+                defaith: 5,
+                haste: 5,
+                slow: 5,
+                regen: 5,
+                poison: 5
+            }
         });
     
         let orc = await newEnemy({
@@ -68,7 +102,24 @@ function newEnemy(enemyData){
             defScale: 120,
             resScale: 80,
             agiScale: 50,
-            luckScale: 90
+            luckScale: 90,
+            aiVals: {
+                attack: 7,
+                fire: 3,
+                cure: 0,
+                protect: 7,
+                deprotect: 7,
+                shell: 4,
+                deshell: 2,
+                bravery: 7,
+                debrave: 6,
+                faith: 2,
+                defaith: 4,
+                haste: 4,
+                slow: 4,
+                regen: 6,
+                poison: 5
+            }
         });
     
         let witch = await newEnemy({
@@ -81,7 +132,24 @@ function newEnemy(enemyData){
             defScale: 70,
             resScale: 120,
             agiScale: 110,
-            luckScale: 50
+            luckScale: 50,
+            aiVals: {
+                attack: 3,
+                fire: 7,
+                cure: 0,
+                protect: 6,
+                deprotect: 2,
+                shell: 6,
+                deshell: 7,
+                bravery: 2,
+                debrave: 5,
+                faith: 7,
+                defaith: 5,
+                haste: 6,
+                slow: 6,
+                regen: 4,
+                poison: 4
+            }
         });
     
         let darkElf = await newEnemy({
@@ -94,7 +162,24 @@ function newEnemy(enemyData){
             defScale: 65,
             resScale: 100,
             agiScale: 135,
-            luckScale: 130
+            luckScale: 130,
+            aiVals: {
+                attack: 6,
+                fire: 5,
+                cure: 0,
+                protect: 6,
+                deprotect: 6,
+                shell: 5,
+                deshell: 3,
+                bravery: 6,
+                debrave: 5,
+                faith: 4,
+                defaith: 4,
+                haste: 6,
+                slow: 4,
+                regen: 3,
+                poison: 4
+            }
         });
     
         let slime = await newEnemy({
@@ -107,7 +192,24 @@ function newEnemy(enemyData){
             defScale: 160,
             resScale: 40,
             agiScale: 90,
-            luckScale: 70
+            luckScale: 70,
+            aiVals: {
+                attack: 4,
+                fire: 6,
+                cure: 0,
+                protect: 6,
+                deprotect: 3,
+                shell: 6,
+                deshell: 7,
+                bravery: 4,
+                debrave: 5,
+                faith: 6,
+                defaith: 4,
+                haste: 6,
+                slow: 4,
+                regen: 3,
+                poison: 6
+            }
         });
     
         let reaper = await newEnemy({
@@ -120,7 +222,24 @@ function newEnemy(enemyData){
             defScale: 200,
             resScale: 200,
             agiScale: 200,
-            luckScale: 200
+            luckScale: 200,
+            aiVals: {
+                attack: 5,
+                fire: 5,
+                cure: 0,
+                protect: 7,
+                deprotect: 7,
+                shell: 7,
+                deshell: 7,
+                bravery: 7,
+                debrave: 7,
+                faith: 7,
+                defaith: 7,
+                haste: 7,
+                slow: 7,
+                regen: 6,
+                poison: 6
+            }
         });
       });
   }

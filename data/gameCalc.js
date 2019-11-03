@@ -245,45 +245,190 @@ function calculatePlayerTurn(gameState, turns) {
 }
 
 function calculateEnemyTurn(gameState, turns, defend) {
-    // Add AI later, for now, just attack
     turns.turn2.currPlayerStats = turns.turn1.currPlayerStats;
     turns.turn2.currEnemyStats = turns.turn1.currEnemyStats;
-    miss = calculateMiss(turns.turn1.currEnemyStats.agi, turns.turn1.currPlayerStats.agi);
-    let turn2Message = gameState.currPlayerStats.name + " <-[Attack]-- " + gameState.currEnemyStats.name + ": "
-    if (!miss) {
-        let tempDef = turns.turn1.currPlayerStats.def;
-        if (defend === true) {
-            tempDef *= 2;
-        }
-        let enemyDamage = calculateDamage(turns.turn1.currEnemyStats.str, tempDef, 1);
-        let crit = calculateCrit(gameState.currEnemyStats.luck, gameState.currPlayerStats.luck);
-        if (crit === true) {
-            enemyDamage = Math.round(enemyDamage * 1.5);
-        }
-        turns.turn2.currPlayerStats.HP -= enemyDamage;
-        if (crit === true) {
-            turn2Message += "*" + enemyDamage + "*";
+
+    let action = calculateAI(turns);
+    let turn2Message = "";
+
+    if (action === "attack") {
+        miss = calculateMiss(turns.turn2.currEnemyStats.agi, turns.turn2.currPlayerStats.agi);
+        turn2Message = gameState.currPlayerStats.name + " <-[Attack]-- " + gameState.currEnemyStats.name + ": "
+        if (!miss) {
+            let tempDef = turns.turn2.currPlayerStats.def;
+            if (defend === true) {
+                tempDef *= 2;
+            }
+            let enemyDamage = calculateDamage(turns.turn2.currEnemyStats.str, tempDef, 1);
+            let crit = calculateCrit(gameState.currEnemyStats.luck, gameState.currPlayerStats.luck);
+            if (crit === true) {
+                enemyDamage = Math.round(enemyDamage * 1.5);
+            }
+            turns.turn2.currPlayerStats.HP -= enemyDamage;
+            if (crit === true) {
+                turn2Message += "*" + enemyDamage + "*";
+            } else {
+                turn2Message += enemyDamage;
+            }
+            turns.turn2.message = turn2Message;
+            if (turns.turn2.currPlayerStats.HP <= 0) {
+                turns.turn2.currPlayerStats.HP = 0;
+                turns.death = -1;
+            }
         } else {
-            turn2Message += enemyDamage;
+            turn2Message += "miss";
+            turns.turn2.message = turn2Message;
+        }
+    } else if (action === "fire") {
+        let tempRes = turns.turn2.currPlayerStats.res;
+        if (defend === true) {
+            tempRes *= 2;
+        }
+        let enemyDamage = calculateDamage(turns.turn2.currEnemyStats.mag, tempRes, 1.1);
+        turn2Message = gameState.currPlayerStats.name + " <-[Fire]-- " + gameState.currEnemyStats.name + ": " + enemyDamage;
+        turns.turn2.currPlayerStats.HP -= enemyDamage;
+        turns.turn2.currEnemyStats.MP -= 5;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0;
         }
         turns.turn2.message = turn2Message;
         if (turns.turn2.currPlayerStats.HP <= 0) {
             turns.turn2.currPlayerStats.HP = 0;
             turns.death = -1;
         }
-    } else {
-        turn2Message += "miss";
+    } else if (action === "cure") {
+        let cureVal = calculateCure(turns.turn2.currEnemyStats.mag);
+        turns.turn2.currEnemyStats.HP += cureVal;
+        if (turns.turn2.currEnemyStats.HP > gameState.currEnemyStats.MaxHP) {
+            turns.turn2.currEnemyStats.HP = gameState.currEnemyStats.MaxHP;
+        }
+        turns.turn2.currEnemyStats.MP -= 5;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currEnemyStats.name + " <-[Cure]->: " + cureVal;
+        turns.turn2.message = turn2Message;
+    } else if (action === "protect") {
+        let scaledDef = Math.round(gameState.baseStats.enemyDef * (gameState.enemyScale.defScale / 100));
+        turns.turn2.currEnemyStats.def = scaledDef + Math.round(scaledDef * 0.2);
+        turns.turn2.currEnemyStats.status.def = 1;
+        turns.turn2.currEnemyStats.MP -= 10;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currEnemyStats.name + " <-[Protect]->";
+        turns.turn2.message = turn2Message;
+    } else if (action === "deprotect") {
+        turns.turn2.currPlayerStats.def = gameState.baseStats.def - Math.round(gameState.baseStats.def * 0.2);
+        turns.turn2.currPlayerStats.status.def = -1;
+        turns.turn2.currEnemyStats.MP -= 10;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currPlayerStats.name + " <-[Deprotect]-- " + gameState.currEnemyStats.name;
+        turns.turn2.message = turn2Message;
+    } else if (action === "shell") {
+        let scaledRes = Math.round(gameState.baseStats.enemyRes * (gameState.enemyScale.resScale / 100));
+        turns.turn2.currEnemyStats.res = scaledRes + Math.round(scaledRes * 0.2);
+        turns.turn2.currEnemyStats.status.res = 1;
+        turns.turn2.currEnemyStats.MP -= 10;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currEnemyStats.name + " <-[Shell]->";
+        turns.turn2.message = turn2Message;
+    } else if (action === "deshell") {
+        turns.turn2.currPlayerStats.res = gameState.baseStats.res - Math.round(gameState.baseStats.res * 0.2);
+        turns.turn2.currPlayerStats.status.res = -1;
+        turns.turn2.currEnemyStats.MP -= 10;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currPlayerStats.name + " <-[Deshell]-- " + gameState.currEnemyStats.name;
+        turns.turn2.message = turn2Message;
+    } else if (action === "bravery") {
+        let scaledStr = Math.round(gameState.baseStats.enemyStr * (gameState.enemyScale.strScale / 100));
+        turns.turn2.currEnemyStats.str = scaledStr + Math.round(scaledStr * 0.2);
+        turns.turn2.currEnemyStats.status.str = 1;
+        turns.turn2.currEnemyStats.MP -= 10;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currEnemyStats.name + " <-[Bravery]->";
+        turns.turn2.message = turn2Message;
+    } else if (action === "debrave") {
+        turns.turn2.currPlayerStats.str = gameState.baseStats.str - Math.round(gameState.baseStats.str * 0.2);
+        turns.turn2.currPlayerStats.status.str = -1;
+        turns.turn2.currEnemyStats.MP -= 10;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currPlayerStats.name + " <-[Debrave]-- " + gameState.currEnemyStats.name;
+        turns.turn2.message = turn2Message;
+    } else if (action === "faith") {
+        let scaledMag = Math.round(gameState.baseStats.enemyMag * (gameState.enemyScale.magScale / 100));
+        turns.turn2.currEnemyStats.mag = scaledMag + Math.round(scaledMag * 0.2);
+        turns.turn2.currEnemyStats.status.mag = 1;
+        turns.turn2.currEnemyStats.MP -= 10;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currEnemyStats.name + " <-[Faith]->";
+        turns.turn2.message = turn2Message;
+    } else if (action === "defaith") {
+        turns.turn2.currPlayerStats.mag = gameState.baseStats.mag - Math.round(gameState.baseStats.mag * 0.2);
+        turns.turn2.currPlayerStats.status.mag = -1;
+        turns.turn2.currEnemyStats.MP -= 10;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currPlayerStats.name + " <-[Defaith]-- " + gameState.currEnemyStats.name;
+        turns.turn2.message = turn2Message;
+    } else if (action === "haste") {
+        let scaledAgi = Math.round(gameState.baseStats.enemyAgi * (gameState.enemyScale.agiScale / 100));
+        turns.turn2.currEnemyStats.agi = scaledAgi + Math.round(scaledAgi * 0.2);
+        turns.turn2.currEnemyStats.status.agi = 1;
+        turns.turn2.currEnemyStats.MP -= 10;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currEnemyStats.name + " <-[Haste]->";
+        turns.turn2.message = turn2Message;
+    } else if (action === "slow") {
+        turns.turn2.currPlayerStats.agi = gameState.baseStats.agi - Math.round(gameState.baseStats.agi * 0.2);
+        turns.turn2.currPlayerStats.status.agi = -1;
+        turns.turn2.currEnemyStats.MP -= 10;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currPlayerStats.name + " <-[Slow]-- " + gameState.currEnemyStats.name;
+        turns.turn2.message = turn2Message;
+    } else if (action === "regen") {
+        turns.turn2.currEnemyStats.status.flux = 1;
+        turns.turn2.currEnemyStats.MP -= 15;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currEnemyStats.name + " <-[Regen]->";
+        turns.turn2.message = turn2Message;
+    } else if (action === "poison") {
+        turns.turn2.currPlayerStats.status.flux = -1;
+        turns.turn2.currEnemyStats.MP -= 15;
+        if (turns.turn2.currEnemyStats.MP < 0) {
+            turns.turn2.currEnemyStats.MP = 0
+        }
+        turn2Message = gameState.currPlayerStats.name + " <-[Poison]-- " + gameState.currEnemyStats.name;
         turns.turn2.message = turn2Message;
     }
 
-    if (gameState.currEnemyStats.status.flux === 1) {
+    if (turns.turn2.currEnemyStats.status.flux === 1) {
         let regenVal = Math.round(gameState.currEnemyStats.MaxHP / 10);
         turns.turn2.currEnemyStats.HP += regenVal;
         if (turns.turn2.currEnemyStats.HP > gameState.currEnemyStats.MaxHP) {
             turns.turn2.currEnemyStats.HP = gameState.currEnemyStats.MaxHP;
         }
         turns.turn2.statusMessage = gameState.currEnemyStats.name + " <-[Regen]->: " + regenVal;
-    } else if (gameState.currEnemyStats.status.flux === -1) {
+    } else if (turns.turn2.currEnemyStats.status.flux === -1) {
         let poisonDamage = Math.round(gameState.currEnemyStats.MaxHP / 10);
         turns.turn2.currEnemyStats.HP -= poisonDamage;
         if (turns.turn2.currEnemyStats.HP <= 0) {
@@ -292,6 +437,88 @@ function calculateEnemyTurn(gameState, turns, defend) {
         turns.turn2.statusMessage = gameState.currEnemyStats.name + " <-[Poison]->: " + poisonDamage;
     }
     return turns;
+}
+
+function calculateAI(turns) {
+    let currAiVals = turns.turn2.currEnemyStats.aiVals;
+
+    if (turns.turn2.currEnemyStats.MP >= 5) {
+        if (turns.turn2.currEnemyStats.HP < (turns.turn2.currEnemyStats.MaxHP * 0.3)) {
+            currAiVals.cure = 7;
+        } else if (turns.turn2.currEnemyStats.HP < (turns.turn2.currEnemyStats.MaxHP * 0.5)) {
+            currAiVals.cure = 5;
+        } else if (turns.turn2.currEnemyStats.HP < (turns.turn2.currEnemyStats.MaxHP * 0.7)) {
+            currAiVals.cure = 3;
+        }
+    } else {
+        currAiVals.fire = 0;
+    }
+
+    if (turns.turn2.currEnemyStats.status.def === 1 || turns.turn2.currEnemyStats.MP < 10) {
+        currAiVals.protect = 0;
+    }
+
+    if (turns.turn2.currPlayerStats.status.def === -1 || turns.turn2.currEnemyStats.MP < 10) {
+        currAiVals.deprotect = 0;
+    }
+
+    if (turns.turn2.currEnemyStats.status.res === 1 || turns.turn2.currEnemyStats.MP < 10) {
+        currAiVals.shell = 0;
+    }
+
+    if (turns.turn2.currPlayerStats.status.res === -1 || turns.turn2.currEnemyStats.MP < 10) {
+        currAiVals.deshell = 0;
+    }
+
+    if (turns.turn2.currEnemyStats.status.str === 1 || turns.turn2.currEnemyStats.MP < 10) {
+        currAiVals.bravery = 0;
+    }
+
+    if (turns.turn2.currPlayerStats.status.str === -1 || turns.turn2.currEnemyStats.MP < 10) {
+        currAiVals.debrave = 0;
+    }
+
+    if (turns.turn2.currEnemyStats.status.mag === 1 || turns.turn2.currEnemyStats.MP < 10) {
+        currAiVals.faith = 0;
+    }
+
+    if (turns.turn2.currPlayerStats.status.mag === -1 || turns.turn2.currEnemyStats.MP < 10) {
+        currAiVals.defaith = 0;
+    }
+
+    if (turns.turn2.currEnemyStats.status.agi === 1 || turns.turn2.currEnemyStats.MP < 10) {
+        currAiVals.haste = 0;
+    }
+
+    if (turns.turn2.currPlayerStats.status.agi === -1 || turns.turn2.currEnemyStats.MP < 10) {
+        currAiVals.slow = 0;
+    }
+
+    if (turns.turn2.currEnemyStats.status.flux === 1 || turns.turn2.currEnemyStats.MP < 15) {
+        currAiVals.regen = 0;
+    }
+
+    if (turns.turn2.currPlayerStats.status.flux === -1 || turns.turn2.currEnemyStats.MP < 15) {
+        currAiVals.poison = 0;
+    }
+
+    for (let i in currAiVals) {
+        if (currAiVals[i] !== 0) {
+            currAiVals[i] = rand(currAiVals[i], 11);
+        }
+    }
+
+    let action = "";
+    let maxVal = 0;
+
+    for (let i in currAiVals) {
+        if (currAiVals[i] > maxVal) {
+            maxVal = currAiVals[i];
+            action = i;
+        }
+    }
+
+    return action;
 }
 
 function calculateDamage(attackerStat, targetStat, modifier) {
@@ -311,14 +538,14 @@ function calculateCure(mag) {
 function calculateMiss(attackerAgi, targetAgi) {
     if (attackerAgi > targetAgi * 10) {
         return false;
-    } else if (attackerAgi * 10 < targetAgi) {
+    } else if (attackerAgi * 15 < targetAgi) {
         return true;
     }
     let agiInverse = attackerAgi - targetAgi;
     if (agiInverse < (attackerAgi * -1)) {
         agiInverse = attackerAgi * -1;
     }
-    let missChance = agiInverse + rand(0, Math.round(attackerAgi * 1.5));
+    let missChance = agiInverse + rand(0, Math.round(attackerAgi * 2));
     if (missChance >= 0) {
         return false;
     } else {
@@ -424,14 +651,14 @@ function applyPlayerLevelUp(playerData) {
     // Stats increase by a random percentage. The range can be boosted with bonus stats.
     let newStats = {
         level: playerData.level + 1,
-        HP: playerData.HP + Math.round(playerData.HP * (rand(20 + playerData.bonusHP, 26 + playerData.bonusHP) / 100)),
-        MP: playerData.MP + Math.round(playerData.MP * (rand(10 + playerData.bonusMP, 16 + playerData.bonusMP) / 100)),
-        str: playerData.str + Math.round(playerData.str * (rand(15 + playerData.bonusStr, 21 + playerData.bonusStr) / 100)),
-        mag: playerData.mag + Math.round(playerData.mag * (rand(15 + playerData.bonusMag, 21 + playerData.bonusMag) / 100)),
-        def: playerData.def + Math.round(playerData.def * (rand(15 + playerData.bonusDef, 21 + playerData.bonusDef) / 100)),
-        res: playerData.res + Math.round(playerData.res * (rand(15 + playerData.bonusRes, 21 + playerData.bonusRes) / 100)),
-        agi: playerData.agi + Math.round(playerData.agi * (rand(15 + playerData.bonusAgi, 21 + playerData.bonusAgi) / 100)),
-        luck: playerData.luck + Math.round(playerData.luck * (rand(15 + playerData.bonusLuck, 21 + playerData.bonusLuck) / 100))
+        HP: playerData.HP + Math.round(playerData.HP * (rand(24 + playerData.bonusHP, 26 + playerData.bonusHP) / 100)),
+        MP: playerData.MP + Math.round(playerData.MP * (rand(14 + playerData.bonusMP, 16 + playerData.bonusMP) / 100)),
+        str: playerData.str + Math.round(playerData.str * (rand(19 + playerData.bonusStr, 21 + playerData.bonusStr) / 100)),
+        mag: playerData.mag + Math.round(playerData.mag * (rand(19 + playerData.bonusMag, 21 + playerData.bonusMag) / 100)),
+        def: playerData.def + Math.round(playerData.def * (rand(19 + playerData.bonusDef, 21 + playerData.bonusDef) / 100)),
+        res: playerData.res + Math.round(playerData.res * (rand(19 + playerData.bonusRes, 21 + playerData.bonusRes) / 100)),
+        agi: playerData.agi + Math.round(playerData.agi * (rand(19 + playerData.bonusAgi, 21 + playerData.bonusAgi) / 100)),
+        luck: playerData.luck + Math.round(playerData.luck * (rand(19 + playerData.bonusLuck, 21 + playerData.bonusLuck) / 100))
     }
     newStats.HP = statRegulator(newStats.HP);
     newStats.MP = statRegulator(newStats.MP);
@@ -459,25 +686,25 @@ function applyEnemyLevelChange(playerData, change) {
     if (change === 1) {
         // Enemy level up
         newStats.level = playerData.enemyLevel + 1;
-        newStats.HP = playerData.enemyHP + Math.round(playerData.enemyHP * (rand(25, 31) / 100));
-        newStats.MP = playerData.enemyMP + Math.round(playerData.enemyMP * (rand(10, 16) / 100));
-        newStats.str = playerData.enemyStr + Math.round(playerData.enemyStr * (rand(15, 21) / 100));
-        newStats.mag = playerData.enemyMag + Math.round(playerData.enemyMag * (rand(15, 21) / 100));
-        newStats.def = playerData.enemyDef + Math.round(playerData.enemyDef * (rand(10, 16) / 100));
-        newStats.res = playerData.enemyRes + Math.round(playerData.enemyRes * (rand(10, 16) / 100));
-        newStats.agi = playerData.enemyAgi + Math.round(playerData.enemyAgi * (rand(10, 16) / 100));
-        newStats.luck = playerData.enemyLuck + Math.round(playerData.enemyLuck * (rand(15, 21) / 100));
+        newStats.HP = playerData.enemyHP + Math.round(playerData.enemyHP * (rand(29, 31) / 100));
+        newStats.MP = playerData.enemyMP + Math.round(playerData.enemyMP * (rand(14, 16) / 100));
+        newStats.str = playerData.enemyStr + Math.round(playerData.enemyStr * (rand(19, 21) / 100));
+        newStats.mag = playerData.enemyMag + Math.round(playerData.enemyMag * (rand(19, 21) / 100));
+        newStats.def = playerData.enemyDef + Math.round(playerData.enemyDef * (rand(14, 16) / 100));
+        newStats.res = playerData.enemyRes + Math.round(playerData.enemyRes * (rand(14, 16) / 100));
+        newStats.agi = playerData.enemyAgi + Math.round(playerData.enemyAgi * (rand(14, 16) / 100));
+        newStats.luck = playerData.enemyLuck + Math.round(playerData.enemyLuck * (rand(19, 21) / 100));
     } else if (change === -1 && playerData.enemyLevel > 1) {
         // Enemy level down
         newStats.level = playerData.enemyLevel - 1;
-        newStats.HP = playerData.enemyHP - Math.round(playerData.enemyHP * (rand(20, 26) / 100));
-        newStats.MP = playerData.enemyMP - Math.round(playerData.enemyMP * (rand(10, 16) / 100));
-        newStats.str = playerData.enemyStr - Math.round(playerData.enemyStr * (rand(10, 16) / 100));
-        newStats.mag = playerData.enemyMag - Math.round(playerData.enemyMag * (rand(10, 16) / 100));
-        newStats.def = playerData.enemyDef - Math.round(playerData.enemyDef * (rand(10, 16) / 100));
-        newStats.res = playerData.enemyRes - Math.round(playerData.enemyRes * (rand(10, 16) / 100));
-        newStats.agi = playerData.enemyAgi - Math.round(playerData.enemyAgi * (rand(10, 16) / 100));
-        newStats.luck = playerData.enemyLuck - Math.round(playerData.enemyLuck * (rand(10, 16) / 100));
+        newStats.HP = playerData.enemyHP - Math.round(playerData.enemyHP * (rand(24, 26) / 100));
+        newStats.MP = playerData.enemyMP - Math.round(playerData.enemyMP * (rand(14, 16) / 100));
+        newStats.str = playerData.enemyStr - Math.round(playerData.enemyStr * (rand(19, 21) / 100));
+        newStats.mag = playerData.enemyMag - Math.round(playerData.enemyMag * (rand(19, 21) / 100));
+        newStats.def = playerData.enemyDef - Math.round(playerData.enemyDef * (rand(14, 16) / 100));
+        newStats.res = playerData.enemyRes - Math.round(playerData.enemyRes * (rand(14, 16) / 100));
+        newStats.agi = playerData.enemyAgi - Math.round(playerData.enemyAgi * (rand(14, 16) / 100));
+        newStats.luck = playerData.enemyLuck - Math.round(playerData.enemyLuck * (rand(14, 16) / 100));
     }
     newStats.HP = statRegulator(newStats.HP);
     newStats.MP = statRegulator(newStats.MP);
@@ -519,6 +746,9 @@ async function updatePlayerData(playerData, newPlayerStats, newEnemyStats) {
 module.exports = {
     rand: rand,
     createTurns: createTurns,
+    calculatePlayerTurn: calculatePlayerTurn,
+    calculateEnemyTurn: calculateEnemyTurn,
+    calculateAI: calculateAI,
     calculateDamage: calculateDamage,
     calculateCure: calculateCure,
     calculateMiss: calculateMiss,

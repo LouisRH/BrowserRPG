@@ -149,6 +149,23 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
             res: Math.round($scope.gamedata.playerData.enemyRes * ($scope.gamedata.enemyData.resScale / 100)),
             agi: Math.round($scope.gamedata.playerData.enemyAgi * ($scope.gamedata.enemyData.agiScale / 100)),
             luck: Math.round($scope.gamedata.playerData.enemyLuck * ($scope.gamedata.enemyData.luckScale / 100)),
+            aiVals: {
+                attack: $scope.gamedata.enemyData.aiVals.attack,
+                fire: $scope.gamedata.enemyData.aiVals.fire,
+                cure: $scope.gamedata.enemyData.aiVals.cure,
+                protect: $scope.gamedata.enemyData.aiVals.protect,
+                deprotect: $scope.gamedata.enemyData.aiVals.deprotect,
+                shell: $scope.gamedata.enemyData.aiVals.shell,
+                deshell: $scope.gamedata.enemyData.aiVals.deshell,
+                bravery: $scope.gamedata.enemyData.aiVals.bravery,
+                debrave: $scope.gamedata.enemyData.aiVals.debrave,
+                faith: $scope.gamedata.enemyData.aiVals.faith,
+                defaith: $scope.gamedata.enemyData.aiVals.defaith,
+                haste: $scope.gamedata.enemyData.aiVals.haste,
+                slow: $scope.gamedata.enemyData.aiVals.slow,
+                regen: $scope.gamedata.enemyData.aiVals.regen,
+                poison: $scope.gamedata.enemyData.aiVals.poison
+            },
             status: {
                 str: 0,
                 mag: 0,

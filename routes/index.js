@@ -17,9 +17,7 @@ const gameGet = (req, res) => {
 
 const gamePost = async (req, res) => {
     if (req.body.messageType === "newGame") {
-        if (await enemyData.getEnemyDataById(1) === null) {
-            let enemySeed = await enemyData.seedEnemies();
-        }
+        let enemySeed = await enemyData.seedEnemies();
         let newGameData = await gameData.newGame(req.body);
         const expiresAt = new Date();
         expiresAt.setMinutes(expiresAt.getMinutes() + 10000);
