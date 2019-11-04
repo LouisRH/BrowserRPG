@@ -30,7 +30,7 @@ function createTurns(gameState) {
     turns = calculatePlayerTurn(gameState, turns);
     if (gameState.messageType === "defend") {
         defend = true;
-    } else if (turns.death === 1) {
+    } else if (turns.death === 1 || turns.flee) {
         return turns;
     }
     
