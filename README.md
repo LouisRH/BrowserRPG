@@ -38,6 +38,8 @@ You have the option of adding up to 10 bonus points to your stats. Adding bonus 
 
 When you have finished customizing your character, click the 'Start' button.
 
+![Character Creation Screen](/images/createChar.png)
+
 # Battle
 
 After creating your character, you will be met with the battle screen. In the center of the screen are two panels displaying your stats and the current enemy's stats. Below is a set of general commands:
@@ -95,6 +97,8 @@ The number shown after the colon is the amount of damage the attack dealt to the
 `Enemy <-[Cure]->: 286`
 
 In this case, the number is the amount of HP healed.
+
+![Battle Screen](/images/battle.png)
 
 # Leveling Up
 
