@@ -16,7 +16,7 @@ app.use(cookieParser());
 configRoutes(app);
 
 
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log("The application is running on http://localhost:3000");
 
     if (process && process.send) process.send({done: true});
