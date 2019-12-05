@@ -6,6 +6,7 @@ const enemyData = data.enemydata;
 const gameCalc = data.gameCalc;
 
 const index = (req, res) => {
+    res.set("Content-Security-Policy", "default-src 'self' https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js 'unsafe-inline'");
     res.sendFile(path.join(__dirname, "..\\public\\html", "index.html"));
     return;
 }
