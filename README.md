@@ -1,9 +1,7 @@
 # BrowserRPG
 A simple turn-based browser game created using Javascript, HTML, CSS, AngularJS, and MongoDB.
 
-Node, npm, and MongoDB are required to run this application.
-
-Before running the application, run the `mongod` command in a command line (assuming MongoDB is included in your PATH environment variable).
+Node and npm are required to run this application.
 
 To start, run the following commands:
 
