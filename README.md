@@ -1,15 +1,7 @@
 # BrowserRPG
 A simple turn-based browser game created using Javascript, HTML, CSS, AngularJS, and MongoDB.
 
-Node and npm are required to run this application.
-
-To start, run the following commands:
-
-`npm install`
-
-`npm start`
-
-Navigate to `http://localhost:3000` to begin the game.
+Navigate to `https://browser-rpg-app.herokuapp.com/` to begin the game.
 
 # Character Creation and Stats
 Upon lanching the game, you will be greeted with a character creation screen. Here you can give your character a name, as well as add bonus points to each of your stats. Here is a breakdown of what each stat does:
