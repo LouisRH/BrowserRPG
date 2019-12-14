@@ -19,7 +19,7 @@ app.use(cookieParser());
 const csp = require('express-csp-header');
 app.use(csp({
     policies: {
-        'default-src': [csp.SELF, csp.INLINE, 'https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js'],
+        'default-src': [csp.SELF, csp.INLINE, 'https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js', 'https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js'],
         'style-src': [csp.SELF, csp.INLINE],
         'img-src': [csp.SELF]
     }
