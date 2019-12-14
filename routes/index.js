@@ -1,22 +1,23 @@
 const express = require("express");
+const router = require("express").Router();
 const path = require("path");
 const data = require("../data");
 const gameData = data.gamedata;
 const enemyData = data.enemydata;
 const gameCalc = data.gameCalc;
 
-const index = (req, res) => {
-    res.set("Content-Security-Policy", "default-src 'self' https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js 'unsafe-inline'");
+router.get("/", function(req, res) {
+    //res.set("Content-Security-Policy", "default-src 'self' https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js 'unsafe-inline'");
     res.sendFile(path.join(__dirname, "..\\public\\html", "index.html"));
     return;
-}
+})
 
-const gameGet = (req, res) => {
+router.get("/game", function(req, res) {
     res.sendFile(path.join(__dirname, "..\\public\\html", "game.html"));
     return;
-}
+})
 
-const gamePost = async (req, res) => {
+router.post("/game", async function(req, res) {
     if (req.body.messageType === "newGame") {
         if (await enemyData.getEnemyDataById(1) === null) {
             let enemySeed = await enemyData.seedEnemies();
@@ -56,8 +57,13 @@ const gamePost = async (req, res) => {
         res.status(200).send(turns);
     }
     return;
-}
+})
 
+router.get("*",function(req, res) {
+    res.status(404).json({ error: "Not found" });
+});
+
+/*
 const constructorMethod = app => {
     app.get("/", index);
     app.get("/game", gameGet);
@@ -67,5 +73,5 @@ const constructorMethod = app => {
         res.status(404).json({ error: "Not found" });
     });
   };
-  
-  module.exports = constructorMethod;
+  */
+module.exports = router;

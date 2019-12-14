@@ -13,7 +13,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
-configRoutes(app);
+app.use('/', configRoutes);
 
 
 app.listen(process.env.PORT || 3000, () => {
@@ -21,3 +21,5 @@ app.listen(process.env.PORT || 3000, () => {
 
     if (process && process.send) process.send({done: true});
 });
+
+module.exports = app;
