@@ -13,6 +13,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 const cookieParser = require("cookie-parser");
 app.use(cookieParser());
 
+const csp = require('express-csp-header');
+app.use(csp({
+    policies: {
+        'default-src': [csp.SELF, csp.INLINE, 'https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js'],
+        'style-src': [csp.SELF],
+        'img-src': [csp.SELF]
+    }
+}));
+
 app.use('/', configRoutes);
 
 
