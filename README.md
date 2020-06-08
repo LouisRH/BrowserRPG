@@ -104,7 +104,7 @@ In addition to gaining stats, leveling up will also grant you skill points, whic
 
 After a battle has concluded, if you click on the 'Skills' button, you will be brought to the following screen:
 
-![Skill Tree](/images/skills.png)
+![Skill Tree](/images/skills.PNG)
 
 Each node in this tree represents an upgrade for your character. Nodes may either provide stat boosts (such as increasing a stat by a percentage), or upgraded versions of your spells. Each node requires one skill point to purchase, but must be purchased in a linear fashion. In other words, a node can only be purchased if the connected nodes above it have also been purchased.
 
