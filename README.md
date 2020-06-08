@@ -80,11 +80,11 @@ Stat increases are represented by a yellow number, and stat decreases are repres
 
 On the right side of the screen is a log that presents information about what is happening in battle. For example, if you cast Fire on the enemy, the message displayed will look similar to this:
 
-`Player --[Fire]-> Enemy: 352`
+`Player --[Fire 1]-> Enemy: 352`
 
 The number shown after the colon is the amount of damage the attack dealt to the enemy. If the number has stars on either side (Ex: \*352\*), this means that the attack was a critical hit. If the enemy then decided to cast Cure on itself to recover from the attack, it would look similar to this:
 
-`Enemy <-[Cure]->: 286`
+`Enemy <-[Cure 1]->: 286`
 
 In this case, the number is the amount of HP healed.
 
@@ -97,6 +97,20 @@ When you defeat an enemy, you gain experience points (which are not visible). Af
 Defeating an enemy will also cause the next enemy to be 1 level stronger than the previous one. Conversely, if you are defeated by an enemy, the next enemy you face will be one level lower. You also gain more experience from defeating enemies that are a higher level than you, and vice versa.
 
 Please note that if you flee from an enemy, the next enemy's level will not change. This should be used if you do not think you can defeat the current enemy, and you do not want to reduce the enemy's level.
+
+In addition to gaining stats, leveling up will also grant you skill points, which can be spent on the skill tree.
+
+# Skill Tree
+
+After a battle has concluded, if you click on the 'Skills' button, you will be brought to the following screen:
+
+![Skill Tree](/images/skills.png)
+
+Each node in this tree represents an upgrade for your character. Nodes may either provide stat boosts (such as increasing a stat by a percentage), or upgraded versions of your spells. Each node requires one skill point to purchase, but must be purchased in a linear fashion. In other words, a node can only be purchased if the connected nodes above it have also been purchased.
+
+As mentioned earlier, some nodes offer an upgrade to a spell. Upgrading a spell will increase its effectiveness, but also significantly increase its cost. Be careful when upgrading spells, rushing to the bottom of the tree in your first few levels could cause trouble.
+
+When you are finished with the skill tree, click on the 'Done' button to start the next battle.
 
 # Enemies
 

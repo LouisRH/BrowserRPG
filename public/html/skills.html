@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.7/angular-route.js"></script>
+    <script src="/public/js/angularSkills.js"></script>
+    <script src="/public/visjs/vis-network.min.js"></script>
+    <link rel="stylesheet" href="/public/css/main.css">
+    <link rel="stylesheet" href="/public/visjs/vis-network.min.css">
+    <title>Browser RPG</title>
+</head>
+<body>
+    <div class="gameScreen" ng-app="skills" ng-controller="skillsCtrl">
+        <div class="treeView">
+            <div class="tree" id="network">
+                <!-- Skill tree goes here -->
+            </div>
+            <div class="description">
+                <div class="descriptionText">
+                    <p id="desc">{{object.description}}</p>
+                </div>
+                <div class="doneBtnContainer">
+                    <button id="unlockBtn" ng-click="unlock()" ng-disabled="object.disabledUnlock" ng-hide="object.hide">Unlock (Points: {{object.points}})</button>
+                    <button class="menuBtn" ng-click="submit()">Done</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -14,32 +14,32 @@
     <div class="gameScreen" ng-app="activeGame" ng-controller="activeGameCtrl">
         <div class="magic">
             <div class="btnGroup">
-                <button class="magicBtn" ng-click="action('fire')" ng-disabled="disabled.magic">Fire: 5MP</button>
-                <button class="magicBtn" ng-click="action('cure')" ng-disabled="disabled.magic">Cure: 5MP</button>
+                <button class="magicBtn" ng-click="action('fire')" ng-disabled="disabled.magic">Fire {{gamedata.playerData.fireLvl}}: {{gamedata.playerData.fireMP}}MP</button>
+                <button class="magicBtn" ng-click="action('cure')" ng-disabled="disabled.magic">Cure {{gamedata.playerData.cureLvl}}: {{gamedata.playerData.cureMP}}MP</button>
             </div>
             <div class="btnGroup">
-                <button class="magicBtn" ng-click="action('protect')" ng-disabled="disabled.magic">Protect: 10MP</button>
-                <button class="magicBtn" ng-click="action('deprotect')" ng-disabled="disabled.magic">Deprotect: 10MP</button>
+                <button class="magicBtn" ng-click="action('protect')" ng-disabled="disabled.magic">Protect {{gamedata.playerData.protectLvl}}: {{gamedata.playerData.protectMP}}MP</button>
+                <button class="magicBtn" ng-click="action('deprotect')" ng-disabled="disabled.magic">Deprotect {{gamedata.playerData.deprotectLvl}}: {{gamedata.playerData.deprotectMP}}MP</button>
             </div>
             <div class="btnGroup">
-                <button class="magicBtn" ng-click="action('shell')" ng-disabled="disabled.magic">Shell: 10MP</button>
-                <button class="magicBtn" ng-click="action('deshell')" ng-disabled="disabled.magic">Deshell: 10MP</button>
+                <button class="magicBtn" ng-click="action('shell')" ng-disabled="disabled.magic">Shell {{gamedata.playerData.shellLvl}}: {{gamedata.playerData.shellMP}}MP</button>
+                <button class="magicBtn" ng-click="action('deshell')" ng-disabled="disabled.magic">Deshell {{gamedata.playerData.deshellLvl}}: {{gamedata.playerData.deshellMP}}MP</button>
             </div>
             <div class="btnGroup">
-                <button class="magicBtn" ng-click="action('bravery')" ng-disabled="disabled.magic">Bravery: 10MP</button>
-                <button class="magicBtn" ng-click="action('debrave')" ng-disabled="disabled.magic">Debrave: 10MP</button>
+                <button class="magicBtn" ng-click="action('bravery')" ng-disabled="disabled.magic">Bravery {{gamedata.playerData.braveryLvl}}: {{gamedata.playerData.braveryMP}}MP</button>
+                <button class="magicBtn" ng-click="action('debrave')" ng-disabled="disabled.magic">Debrave {{gamedata.playerData.debraveLvl}}: {{gamedata.playerData.debraveMP}}MP</button>
             </div>
             <div class="btnGroup">
-                <button class="magicBtn" ng-click="action('faith')" ng-disabled="disabled.magic">Faith: 10MP</button>
-                <button class="magicBtn" ng-click="action('defaith')" ng-disabled="disabled.magic">Defaith: 10MP</button>
+                <button class="magicBtn" ng-click="action('faith')" ng-disabled="disabled.magic">Faith {{gamedata.playerData.faithLvl}}: {{gamedata.playerData.faithMP}}MP</button>
+                <button class="magicBtn" ng-click="action('defaith')" ng-disabled="disabled.magic">Defaith {{gamedata.playerData.defaithLvl}}: {{gamedata.playerData.defaithMP}}MP</button>
             </div>
             <div class="btnGroup">
-                <button class="magicBtn" ng-click="action('haste')" ng-disabled="disabled.magic">Haste: 10MP</button>
-                <button class="magicBtn" ng-click="action('slow')" ng-disabled="disabled.magic">Slow: 10MP</button>
+                <button class="magicBtn" ng-click="action('haste')" ng-disabled="disabled.magic">Haste {{gamedata.playerData.hasteLvl}}: {{gamedata.playerData.hasteMP}}MP</button>
+                <button class="magicBtn" ng-click="action('slow')" ng-disabled="disabled.magic">Slow {{gamedata.playerData.slowLvl}}: {{gamedata.playerData.slowMP}}MP</button>
             </div>
             <div class="btnGroup">
-                <button class="magicBtn" ng-click="action('regen')" ng-disabled="disabled.magic">Regen: 15MP</button>
-                <button class="magicBtn" ng-click="action('poison')" ng-disabled="disabled.magic">Poison: 15MP</button>
+                <button class="magicBtn" ng-click="action('regen')" ng-disabled="disabled.magic">Regen {{gamedata.playerData.regenLvl}}: {{gamedata.playerData.regenMP}}MP</button>
+                <button class="magicBtn" ng-click="action('poison')" ng-disabled="disabled.magic">Poison {{gamedata.playerData.poisonLvl}}: {{gamedata.playerData.poisonMP}}MP</button>
             </div>
         </div>
         <div class="statMenu">
@@ -99,6 +99,7 @@
                 <button class="menuBtn" ng-click="action('attack')" ng-disabled="disabled.attack">Attack</button>
                 <button class="menuBtn" ng-click="action('defend')" ng-disabled="disabled.defend">Defend</button>
                 <button class="menuBtn" ng-click="action('flee')" ng-disabled="disabled.flee">Flee</button>
+                <button class="menuBtn" ng-click="action('skills')" ng-disabled="disabled.skills">Skills</button>
                 <button class="menuBtn" ng-click="action('next')" ng-disabled="disabled.next">Next</button>
             </div>
         </div>

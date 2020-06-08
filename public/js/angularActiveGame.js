@@ -1,5 +1,5 @@
 var app = angular.module('activeGame', ['ngRoute']);
-app.controller('activeGameCtrl', function($scope, $http, $timeout) {
+app.controller('activeGameCtrl', function($scope, $http, $window) {
     $scope.gamedata;
     $scope.currPlayerStats;
     $scope.currEnemyStats;
@@ -8,6 +8,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
         defend: false,
         flee: false,
         magic: false,
+        skills: true,
         next: true
     }
     $scope.playerLevelUp = false;
@@ -25,11 +26,20 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
 
     $scope.action = function(action) {
         // Check current MP, send rejection message if not enough / Prevent redundant spellcasting
-        if (((action === "fire" || action === "cure") && $scope.currPlayerStats.MP < 5) ||
-            ((action === "protect" || action === "deprotect" || action === "shell" || action === "deshell" ||
-              action === "bravery" || action === "debrave" || action === "faith" || action === "defaith" ||
-              action === "haste" || action === "slow") && $scope.currPlayerStats.MP < 10) ||
-            ((action === "regen" || action === "poison") && $scope.currPlayerStats.MP < 15)) {
+        if ((action === "fire" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.fireMP) || 
+        (action === "cure" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.cureMP) ||
+        (action === "protect" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.protectMP) || 
+        (action === "deprotect" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.deprotectMP) || 
+        (action === "shell" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.shellMP) || 
+        (action === "deshell" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.deshellMP) ||
+        (action === "bravery" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.braveryMP) || 
+        (action === "debrave" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.debraveMP) || 
+        (action === "faith" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.faithMP) || 
+        (action === "defaith" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.defaithMP) ||
+        (action === "haste" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.hasteMP) || 
+        (action === "slow" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.slowMP) ||
+        (action === "regen" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.regenMP) || 
+        (action === "poison" && $scope.currPlayerStats.MP < $scope.gamedata.playerData.poisonMP)) {
             $scope.updateLog("Not enough MP!");
         } else if ((action === "protect" && $scope.currPlayerStats.status.def === 1) || 
         (action === "deprotect" && $scope.currEnemyStats.status.def === -1) || 
@@ -44,11 +54,12 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
         (action === "regen" && $scope.currPlayerStats.status.flux === 1) || 
         (action === "poison" && $scope.currEnemyStats.status.flux === -1)) {
             $scope.updateLog("Status already in effect!");
-        } else if (action !== "next") {
+        } else if (action !== "next" && action !== "skills") {
             $scope.disabled.attack = true;
             $scope.disabled.defend = true;
             $scope.disabled.flee = true;
             $scope.disabled.magic = true;
+            $scope.disabled.skills = true;
             $scope.disabled.next = true;
             sendData = {
                 messageType: action,
@@ -68,6 +79,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                 
                 // Turn2
                 if (responseGood.data.flee === true) {
+                    $scope.disabled.skills = false;
                     $scope.disabled.next = false;
                     $scope.updateLog("Click 'Next' to continue.");
                 } else if (responseGood.data.death === 0) {
@@ -82,6 +94,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                     $scope.disabled.flee = false;
                     $scope.disabled.magic = false;
                 } else {
+                    $scope.disabled.skills = false;
                     $scope.disabled.next = false;
                     if (responseGood.data.death === 1) {
                         $scope.updateLog(responseGood.data.turn1.currEnemyStats.name + " defeated!");
@@ -100,7 +113,24 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
             }, (responseBad) => {
                 alert("Error: Attack failed");
             });
+        } else if (action === "skills") {
+            $scope.disabled.skills = true;
+            $scope.disabled.next = true;
+            sendData = {
+                messageType: "save",
+                playerID: $scope.gamedata.playerData._id,
+                playerLevelUp: $scope.playerLevelUp,
+                enemyLevelUp: $scope.enemyLevelUp,
+                exp: $scope.currPlayerStats.exp
+            }
+            $http.post('/skills', sendData).then((responseGood) => {
+                var url = "http://" + $window.location.host + "/skills";
+                $window.location.href = url;
+            }, (responseBad) => {
+                alert(responseBad.data);
+            })
         } else if (action === "next") {
+            $scope.disabled.skills = true;
             $scope.disabled.next = true;
             sendData = {
                 messageType: "next",
@@ -113,7 +143,7 @@ app.controller('activeGameCtrl', function($scope, $http, $timeout) {
                 $scope.gamedata = responseGood.data;
                 $scope.updateScreen();
                 $scope.playerLevelUp = false;
-                $scope.enemyLevel = 0;
+                $scope.enemyLevelUp = 0;
                 $scope.disabled.attack = false;
                 $scope.disabled.defend = false;
                 $scope.disabled.flee = false;
